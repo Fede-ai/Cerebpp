@@ -19,15 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Mlib\ai.hpp" />
-    <ClInclude Include="Mlib\Ai\layer.hpp" />
-    <ClInclude Include="Mlib\util.hpp" />
-    <ClInclude Include="Mlib\Util\dataPoint.hpp" />
+    <ClInclude Include="src\Mlib\ai.hpp" />
+    <ClInclude Include="src\Mlib\Ai\layer.hpp" />
+    <ClInclude Include="src\Mlib\util.hpp" />
+    <ClInclude Include="src\Mlib\Util\dataPoint.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Mlib\Ai\ai.cpp" />
-    <ClCompile Include="Mlib\Ai\layer.cpp" />
-    <ClCompile Include="Mlib\Util\util.cpp" />
+    <ClCompile Include="src\Mlib\Ai\ai.cpp" />
+    <ClCompile Include="src\Mlib\Ai\layer.cpp" />
+    <ClCompile Include="src\Mlib\Util\util.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

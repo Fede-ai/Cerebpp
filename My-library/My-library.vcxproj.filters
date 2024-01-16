@@ -9,27 +9,27 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Mlib\util.hpp">
+    <ClInclude Include="src\Mlib\util.hpp">
       <Filter>Util</Filter>
     </ClInclude>
-    <ClInclude Include="Mlib\Util\dataPoint.hpp">
+    <ClInclude Include="src\Mlib\Util\dataPoint.hpp">
       <Filter>Util</Filter>
     </ClInclude>
-    <ClInclude Include="Mlib\ai.hpp">
+    <ClInclude Include="src\Mlib\ai.hpp">
       <Filter>Ai</Filter>
     </ClInclude>
-    <ClInclude Include="Mlib\Ai\layer.hpp">
+    <ClInclude Include="src\Mlib\Ai\layer.hpp">
       <Filter>Ai</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Mlib\Util\util.cpp">
+    <ClCompile Include="src\Mlib\Util\util.cpp">
       <Filter>Util</Filter>
     </ClCompile>
-    <ClCompile Include="Mlib\Ai\ai.cpp">
+    <ClCompile Include="src\Mlib\Ai\ai.cpp">
       <Filter>Ai</Filter>
     </ClCompile>
-    <ClCompile Include="Mlib\Ai\layer.cpp">
+    <ClCompile Include="src\Mlib\Ai\layer.cpp">
       <Filter>Ai</Filter>
     </ClCompile>
   </ItemGroup>
