@@ -21,8 +21,8 @@
   <ItemGroup>
     <ClInclude Include="src\Mlib\ai.hpp" />
     <ClInclude Include="src\Mlib\Ai\layer.hpp" />
+    <ClInclude Include="src\Mlib\data.hpp" />
     <ClInclude Include="src\Mlib\util.hpp" />
-    <ClInclude Include="src\Mlib\Util\dataPoint.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Mlib\Ai\ai.cpp" />

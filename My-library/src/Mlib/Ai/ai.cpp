@@ -51,7 +51,7 @@ namespace Mlib {
 		file.close();
 	}
 
-	std::vector<double> Ai::forwardProp(DataPoint datapoint)
+	std::vector<double> Ai::forwardProp(Datapoint datapoint)
 	{
 		std::vector<double> dataDouble;
 		for (auto d : datapoint.data)
@@ -64,7 +64,7 @@ namespace Mlib {
 
 		return values;
 	}
-	void Ai::backProp(DataPoint datapoint)
+	void Ai::backProp(Datapoint datapoint)
 	{
 		forwardProp(datapoint);
 		std::vector<double> nodeValues = layers[layers.size() - 1].computeOutputNodeValues(datapoint.target);
@@ -76,7 +76,7 @@ namespace Mlib {
 			layers[layer].updateGradients(nodeValues);
 		}
 	}
-	double Ai::loss(std::vector<DataPoint> datapoints)
+	double Ai::loss(std::vector<Datapoint> datapoints)
 	{
 		double loss = 0;
 		for (auto datapoint : datapoints)
@@ -84,7 +84,7 @@ namespace Mlib {
 		return (loss / datapoints.size());
 	}
 
-	void Ai::learn(std::vector<DataPoint> datapoints, double learnRate, double momentum)
+	void Ai::learn(std::vector<Datapoint> datapoints, double learnRate, double momentum)
 	{
 		for (auto& datapoint : datapoints)
 			backProp(datapoint);

@@ -7,12 +7,12 @@
     <Filter Include="Util">
       <UniqueIdentifier>{866cea93-f0c7-434a-a7f3-00bb84494119}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{8815228f-579b-4b04-b0ca-2c40ff541b5e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Mlib\util.hpp">
-      <Filter>Util</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Mlib\Util\dataPoint.hpp">
       <Filter>Util</Filter>
     </ClInclude>
     <ClInclude Include="src\Mlib\ai.hpp">
@@ -20,6 +20,9 @@
     </ClInclude>
     <ClInclude Include="src\Mlib\Ai\layer.hpp">
       <Filter>Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Mlib\data.hpp">
+      <Filter>Data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
