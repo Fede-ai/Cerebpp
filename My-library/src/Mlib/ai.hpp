@@ -7,7 +7,7 @@
 namespace Mlib {
 	class Ai {
 	public:
-		Ai(std::vector<int> inSize);
+		Ai(std::vector<int> inSizes, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc, bool rand = false);
 		Ai(std::string path);
 		std::vector<double> forwardProp(Datapoint datapoint);
 		double loss(std::vector<Datapoint> datapoints);
@@ -18,5 +18,7 @@ namespace Mlib {
 		void backProp(Datapoint datapoint);
 		std::vector<int> sizes;
 		std::vector<Layer> layers;
+		ActFunc hidAct, outAct;
+		LossFunc lossFunc;
 	};
 }

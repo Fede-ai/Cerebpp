@@ -3,15 +3,21 @@
 #include <cmath>
 
 namespace Mlib {
-	Layer::Layer(int inNumBef, int inNumAft)
+	Layer::Layer(int inNumBef, int inNumAft, bool rand, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc)
 		:
 		numBef(inNumBef),
-		numAft(inNumAft)
+		numAft(inNumAft),
+		hidAct(inHidAct),
+		outAct(inOutAct),
+		lossFunc(inLossFunc)
 	{
 		//setup biases
 		for (int bias = 0; bias < numAft; bias++)
 		{
-			biases.push_back(random(0, 100'000) / 100'000.f - 0.5);
+			if (rand)
+				biases.push_back(random(0, 100'000) / 100'000.f - 0.5);
+			else
+				biases.push_back(0);
 			biasesGradients.push_back(0);
 		}
 		biasesVelocities = biasesGradients;
@@ -22,7 +28,10 @@ namespace Mlib {
 			std::vector<double> partialWeightsGradients;
 			for (int aft = 0; aft < numAft; aft++)
 			{
-				partialWeights.push_back(random(0, 100'000) / 100'000.f - 0.5);
+				if (rand)
+					partialWeights.push_back(random(0, 100'000) / 100'000.f - 0.5);
+				else
+					partialWeights.push_back(0);
 				partialWeightsGradients.push_back(0);
 			}
 			weights.push_back(partialWeights);
@@ -149,73 +158,121 @@ namespace Mlib {
 		}
 	}
 
-	std::vector<double> Layer::hiddenAct(std::vector<double> values)
-	{
-		std::vector<double> activated;
-
-		//sigmoid
-		//return 1 / (1 + exp(-value));
-
-		//ReLU
-		for (auto v : values)
-			activated.push_back(std::max(v, double(0)));
-
-		return activated;
-	}
-	std::vector<double> Layer::hiddenActDer(std::vector<double> values)
-	{
-		std::vector<double> derivatives;
-
-		//sigmoid
-		//double activated = outputAct(value);
-		//return activated * (1 - activated);
-
-		//ReLU
-		for (auto v : values)
-		{
-			if (v < 0)
-				derivatives.push_back(0);
-			else
-				derivatives.push_back(1);
-		}
-	
-		return derivatives;
-	}
-	std::vector<double> Layer::outputAct(std::vector<double> values)
-	{
-		std::vector<double> activated;
-	
-		//softmax
-		double expSum = 0;
-		for (double v : values) {
-			double exp = std::exp(v);	
-			activated.push_back(exp);
-			expSum += exp;
-		}
-		for (double& v : activated) {
-			v /= expSum;
-		}
-
-		return activated;
-	}
-
-	double Layer::loss(std::vector<double> values, std::vector<double> targets)
+	double Layer::loss(std::vector<double> values, std::vector<double> targets) const
 	{
 		double loss = 0.0;
 
-		//cross entropy
-		for (int i = 0; i < values.size(); i++)
-			loss += -targets[i] * std::log(values[i] + 1e-15);
+		if (lossFunc == LossFunc::SquaredError)
+		{
+			for (int i = 0; i < values.size(); i++)
+				loss += std::pow((targets[i] - values[i]), 2);
+		}
+		else if (lossFunc == LossFunc::CrossEntropy)
+		{
+			for (int i = 0; i < values.size(); i++)
+				loss += -targets[i] * std::log(values[i] + 1e-15);
+		}
+		else std::exit(-100);
 
 		return loss;
 	}
-	std::vector<double> Layer::lossAndOutputActDer(std::vector<double> values, std::vector<double> targets)
+
+	std::vector<double> Layer::hiddenAct(std::vector<double> values) const
+	{
+		std::vector<double> activated;
+
+		if (hidAct == ActFunc::Sigmoid)
+		{
+			for (auto v : values)
+				activated.push_back(1.f / (1 + exp(-v)));
+		}
+		else if (hidAct == ActFunc::ReLU)
+		{
+			for (auto v : values)
+				activated.push_back(std::max(v, double(0)));
+		}
+		else
+		{
+			std::exit(-100);
+		}
+
+		return activated;
+	}
+	std::vector<double> Layer::hiddenActDer(std::vector<double> values) const
+	{
+		std::vector<double> derivatives;
+
+		if (hidAct == ActFunc::Sigmoid)
+		{
+			for (auto v : values)
+			{
+				double activated = 1.f / (1 + exp(-v));
+				derivatives.push_back(activated * (1 - activated));
+			}
+		}
+		else if (hidAct == ActFunc::ReLU)
+		{
+			for (auto v : values)
+			{
+				if (v < 0)
+					derivatives.push_back(0);
+				else
+					derivatives.push_back(1);
+			}
+		}
+		else 
+		{
+			std::exit(-100);
+		}
+			
+		return derivatives;
+	}
+	std::vector<double> Layer::outputAct(std::vector<double> values) const
+	{
+		std::vector<double> activated;
+	
+		if (outAct == ActFunc::Sigmoid)
+		{
+			for (auto v : values)
+				activated.push_back(1.f / (1 + exp(-v)));
+		}
+		else if (outAct == ActFunc::Softmax)
+		{
+			double expSum = 0;
+			for (double v : values) {
+				double exp = std::exp(v);	
+				activated.push_back(exp);
+				expSum += exp;
+			}
+			for (double& v : activated) {
+				v /= expSum;
+			}
+		}
+		else
+		{
+			std::exit(-100);
+		}
+
+		return activated;
+	}
+	std::vector<double> Layer::lossAndOutputActDer(std::vector<double> values, std::vector<double> targets) const
 	{
 		std::vector<double> nodesLossesDer;
 
-		//softmax + cross entropy
-		for (int i = 0; i < values.size(); i++)
-			nodesLossesDer.push_back(values[i] - targets[i]);
+		if (outAct == ActFunc::Softmax && lossFunc == LossFunc::CrossEntropy)
+		{
+			for (int i = 0; i < values.size(); i++)
+				nodesLossesDer.push_back(values[i] - targets[i]);
+		}
+		else if (outAct == ActFunc::Sigmoid && lossFunc == LossFunc::SquaredError)
+		{
+			for (int i = 0; i < values.size(); i++)
+			{
+				double sigm = 1.f / (1 + exp(-values[i]));
+				nodesLossesDer.push_back(sigm * (1 - sigm) * 2 * (values[i] - targets[i]));
+			}
+		}
+		else std::exit(-101);
 
 		return nodesLossesDer;
 	}

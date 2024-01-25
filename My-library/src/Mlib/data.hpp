@@ -63,6 +63,6 @@ namespace Mlib {
 		}
 		Batch() {}
 
-		std::vector<Datapoint&> data;
+		std::vector<std::reference_wrapper<Datapoint>> data;
 	};
 }

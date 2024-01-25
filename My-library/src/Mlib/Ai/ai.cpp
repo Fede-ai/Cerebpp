@@ -4,12 +4,16 @@
 #include <sstream>
 
 namespace Mlib {
-	Ai::Ai(std::vector<int> inSizes)
+	Ai::Ai(std::vector<int> inSizes, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc, bool rand)
+		:
+		hidAct(inHidAct),
+		outAct(inOutAct),
+		lossFunc(inLossFunc)
 	{
 		sizes = inSizes;
 
 		for (int layer = 1; layer < sizes.size(); layer++)
-			layers.push_back(Layer(sizes[layer - 1], sizes[layer]));
+			layers.push_back(Layer(sizes[layer - 1], sizes[layer], rand, inHidAct, inOutAct, inLossFunc));
 	}
 	Ai::Ai(std::string path)
 	{
@@ -24,8 +28,18 @@ namespace Mlib {
 		std::istringstream sizesStream(line);
 		while (getline(sizesStream, token, ','))
 			sizes.push_back(stoi(token));
+		//extract and load functions used
+		getline(file, line);
+		std::istringstream funcStream(line);
+		getline(funcStream, token, ',');
+		hidAct = static_cast<ActFunc>(stoi(token));
+		getline(funcStream, token, ',');
+		outAct = static_cast<ActFunc>(stoi(token));
+		getline(funcStream, token, ',');
+		lossFunc = static_cast<LossFunc>(stoi(token));
+
 		for (int i = 1; i < sizes.size(); i++)
-			layers.push_back(Layer(sizes[i - 1], sizes[i]));
+			layers.push_back(Layer(sizes[i - 1], sizes[i], false, hidAct, outAct, lossFunc));
 
 		for (auto& layer : layers)
 		{
@@ -80,7 +94,7 @@ namespace Mlib {
 	{
 		double loss = 0;
 		for (auto datapoint : datapoints)
-			loss += Layer::loss(forwardProp(datapoint), datapoint.target);
+			loss += layers[0].loss(forwardProp(datapoint), datapoint.target);
 		return (loss / datapoints.size());
 	}
 
@@ -107,6 +121,8 @@ namespace Mlib {
 		for (auto size : sizes)
 			file << size << ',';
 		file << '\n';
+
+		file << static_cast<int>(hidAct) << ',' << static_cast<int>(outAct) << ',' << static_cast<int>(lossFunc) << ",\n";
 
 		//write biases and weights
 		for (auto layer : layers)

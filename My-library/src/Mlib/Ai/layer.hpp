@@ -2,9 +2,20 @@
 #include <vector>
 
 namespace Mlib {
+	enum ActFunc {
+		Sigmoid = 0,
+		ReLU = 1,
+		Softmax = 2
+	};
+
+	enum LossFunc {
+		SquaredError = 0,
+		CrossEntropy = 1
+	};
+
 	class Layer {
 	public:
-		Layer(int inNumBef, int inNumAft);
+		Layer(int inNumBef, int inNumAft, bool rand, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc);
 		std::vector<double> computeHidden(std::vector<double> inputs);
 		std::vector<double> computeHiddenNodeValues(std::vector<double> nodeValuesAfter, Layer layerAft) const;
 		std::vector<double> computeOutput(std::vector<double> inputs);
@@ -14,7 +25,7 @@ namespace Mlib {
 		void applyGradients(double learnRate, double momentum, int batchSize);
 		void clearGradients();
 
-		static double loss(std::vector<double> values, std::vector<double> targets);
+		double loss(std::vector<double> values, std::vector<double> targets) const;
 
 		const int numBef, numAft;	
 		//relative to the nodes after
@@ -23,11 +34,13 @@ namespace Mlib {
 		std::vector<std::vector<double>> weights;
 
 	private:
-		static std::vector<double> hiddenAct(std::vector<double> values);
-		static std::vector<double> hiddenActDer(std::vector<double> values);
-		static std::vector<double> outputAct(std::vector<double> values);
+		std::vector<double> hiddenAct(std::vector<double> values) const;
+		std::vector<double> hiddenActDer(std::vector<double> values) const;
+		std::vector<double> outputAct(std::vector<double> values) const;
 
-		static std::vector<double> lossAndOutputActDer(std::vector<double> values, std::vector<double> targets);	
+		std::vector<double> lossAndOutputActDer(std::vector<double> values, std::vector<double> targets) const;
+		ActFunc hidAct, outAct; 
+		LossFunc lossFunc;
 
 		//relative to the nodes after
 		std::vector<double> biasesGradients, biasesVelocities;
