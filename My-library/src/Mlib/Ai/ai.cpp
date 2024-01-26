@@ -4,7 +4,7 @@
 #include <sstream>
 
 namespace Mlib {
-	Ai::Ai(std::vector<int> inSizes, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc, bool rand)
+	Ai::Ai(std::vector<int> inSizes, Func::ActFunc inHidAct, Func::ActFunc inOutAct, Func::LossFunc inLossFunc, bool rand)
 		:
 		hidAct(inHidAct),
 		outAct(inOutAct),
@@ -19,7 +19,7 @@ namespace Mlib {
 	{
 		std::fstream file;
 		std::string line, token;
-		file.open(path, std::ios::in);
+		file.open(path + ".txt", std::ios::in);
 		if (!file.is_open())
 			return;
 
@@ -32,40 +32,22 @@ namespace Mlib {
 		getline(file, line);
 		std::istringstream funcStream(line);
 		getline(funcStream, token, ',');
-		hidAct = static_cast<ActFunc>(stoi(token));
+		hidAct = static_cast<Func::ActFunc>(stoi(token));
 		getline(funcStream, token, ',');
-		outAct = static_cast<ActFunc>(stoi(token));
+		outAct = static_cast<Func::ActFunc>(stoi(token));
 		getline(funcStream, token, ',');
-		lossFunc = static_cast<LossFunc>(stoi(token));
+		lossFunc = static_cast<Func::LossFunc>(stoi(token));
 
 		for (int i = 1; i < sizes.size(); i++)
-			layers.push_back(Layer(sizes[i - 1], sizes[i], false, hidAct, outAct, lossFunc));
-
-		for (auto& layer : layers)
 		{
 			getline(file, line);
-			std::istringstream layerStrean(line);
-
-			for (int bef = 0; bef < layer.numBef; bef++)
-			{
-				for (int aft = 0; aft < layer.numAft; aft++)
-				{
-					getline(layerStrean, token, ',');
-					layer.weights[bef][aft] = stod(token);
-				}
-			}
-
-			for (int aft = 0; aft < layer.numAft; aft++)
-			{
-				getline(layerStrean, token, ',');
-				layer.biases[aft] = stod(token);
-			}
+			layers.push_back(Layer(sizes[i - 1], sizes[i], hidAct, outAct, lossFunc, line));
 		}
 
 		file.close();
 	}
 
-	std::vector<double> Ai::forwardProp(Datapoint datapoint)
+	std::vector<double> Ai::computePrediction(Datapoint datapoint)
 	{
 		std::vector<double> dataDouble;
 		for (auto d : datapoint.data)
@@ -80,7 +62,7 @@ namespace Mlib {
 	}
 	void Ai::backProp(Datapoint datapoint)
 	{
-		forwardProp(datapoint);
+		computePrediction(datapoint);
 		std::vector<double> nodeValues = layers[layers.size() - 1].computeOutputNodeValues(datapoint.target);
 		layers[layers.size() - 1].updateGradients(nodeValues);
 
@@ -90,29 +72,29 @@ namespace Mlib {
 			layers[layer].updateGradients(nodeValues);
 		}
 	}
-	double Ai::loss(std::vector<Datapoint> datapoints)
+	double Ai::loss(Batch batch)
 	{
 		double loss = 0;
-		for (auto datapoint : datapoints)
-			loss += layers[0].loss(forwardProp(datapoint), datapoint.target);
-		return (loss / datapoints.size());
+		for (auto d : batch.data)
+			loss += layers[0].loss(computePrediction(d), d.get().target);
+		return (loss / batch.data.size());
 	}
 
-	void Ai::learn(std::vector<Datapoint> datapoints, double learnRate, double momentum)
+	void Ai::train(Batch batch, double learnRate, double momentum)
 	{
-		for (auto& datapoint : datapoints)
-			backProp(datapoint);
+		for (auto& d : batch.data)
+			backProp(d.get());
 
 		for (auto& layer : layers)
-			layer.applyGradients(learnRate, momentum, datapoints.size());
+			layer.applyGradients(learnRate, momentum, batch.data.size());
 
 		for (auto& layer : layers)
 			layer.clearGradients();
 	}
-	void Ai::save() const
+	void Ai::save(std::string path) const
 	{
 		std::fstream file;
-		file.open("save.txt", std::ios::out | std::ios::trunc);
+		file.open(path + ".txt", std::ios::out | std::ios::trunc);
 
 		if (!file.is_open())
 			return;
@@ -127,14 +109,7 @@ namespace Mlib {
 		//write biases and weights
 		for (auto layer : layers)
 		{
-			for (int bef = 0; bef < layer.numBef; bef++)
-			{
-				for (int aft = 0; aft < layer.numAft; aft++)
-					file << std::to_string(layer.weights[bef][aft]) << ',';
-			}
-
-			for (int aft = 0; aft < layer.numAft; aft++)
-				file << std::to_string(layer.biases[aft]) << ',';
+			file << layer.toString();
 
 			file << '\n';
 		}

@@ -8,7 +8,7 @@
 namespace Mlib {
 	struct Datapoint
 	{
-		//setup the datapoint with the given data, target adn id values
+		//setup the datapoint with the given data, target and id values
 		Datapoint(std::vector<double> inData, std::vector<double> inTarget, int inId)
 			:
 			data(inData), target(inTarget), id(inId)
@@ -16,8 +16,6 @@ namespace Mlib {
 		}
 		//create an empty datapoint
 		Datapoint() {}
-		//load datapoint from string
-		Datapoint(std::string str) {}
 
 		std::vector<double> data;
 		std::vector<double> target;
@@ -26,6 +24,8 @@ namespace Mlib {
 
 	struct Dataset
 	{
+		/*load a dataset from a file(.txt or .csv files should be used).
+		each line of the file will be converted to a datapoint using the 'func' parameter*/
 		Dataset(std::function<Datapoint(std::string)> func, std::string path, int num, bool labels = false)
 		{
 			//skip n lines
@@ -45,24 +45,29 @@ namespace Mlib {
 				
 			file.close();
 		}
+		//create an empty dataset
 		Dataset() {}
 
+		//a vector of the datapoints that form the dataset
 		std::vector<Datapoint> data;
 	};
 
 	struct Batch
 	{
-		Batch(Dataset d, int size)
+		//create a batch taking 'n' random datapoints from the given dataset
+		Batch(Dataset dataset, int n)
 		{
-			for (int i = 0; i < size; i++)
+			for (int i = 0; i < n; i++)
 			{
-				int index = Mlib::random(0, d.data.size() - 1);
-				data.push_back(d.data[index]);
-				d.data.erase(d.data.begin() + index);
+				int index = Mlib::random(0, dataset.data.size() - 1);
+				data.push_back(dataset.data[index]);
+				dataset.data.erase(dataset.data.begin() + index);
 			}
 		}
+		//create an empty batch
 		Batch() {}
 
+		//a vector of references to datapoints
 		std::vector<std::reference_wrapper<Datapoint>> data;
 	};
 }

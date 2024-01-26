@@ -18,9 +18,6 @@
     <ClInclude Include="src\Mlib\ai.hpp">
       <Filter>Ai</Filter>
     </ClInclude>
-    <ClInclude Include="src\Mlib\Ai\layer.hpp">
-      <Filter>Ai</Filter>
-    </ClInclude>
     <ClInclude Include="src\Mlib\data.hpp">
       <Filter>Data</Filter>
     </ClInclude>

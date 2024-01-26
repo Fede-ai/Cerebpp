@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Mlib\ai.hpp" />
-    <ClInclude Include="src\Mlib\Ai\layer.hpp" />
     <ClInclude Include="src\Mlib\data.hpp" />
     <ClInclude Include="src\Mlib\util.hpp" />
   </ItemGroup>
