@@ -8,10 +8,9 @@ namespace Mlib {
 		:
 		hidAct(inHidAct),
 		outAct(inOutAct),
-		lossFunc(inLossFunc)
+		lossFunc(inLossFunc),
+		sizes(inSizes)
 	{
-		sizes = inSizes;
-
 		for (int layer = 1; layer < sizes.size(); layer++)
 			layers.push_back(Layer(sizes[layer - 1], sizes[layer], rand, inHidAct, inOutAct, inLossFunc));
 	}

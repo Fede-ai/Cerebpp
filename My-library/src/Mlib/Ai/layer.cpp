@@ -50,20 +50,31 @@ namespace Mlib {
 	{
 		std::string token;
 		std::istringstream layerStrean(string);
+
+		//setup weights
 		for (int bef = 0; bef < numBef; bef++)
 		{
+			std::vector<double> partialWeights;
+			std::vector<double> partialWeightsGradients;
 			for (int aft = 0; aft < numAft; aft++)
 			{
 				getline(layerStrean, token, ',');
-				weights[bef][aft] = stod(token);
+				partialWeights.push_back(stod(token));
+				partialWeightsGradients.push_back(0);
 			}
+			weights.push_back(partialWeights);
+			weightsGradients.push_back(partialWeightsGradients);
 		}
+		weightsVelocities = weightsGradients;
 
-		for (int aft = 0; aft < numAft; aft++)
+		//setup biases
+		for (int bias = 0; bias < numAft; bias++)
 		{
 			getline(layerStrean, token, ',');
-			biases[aft] = stod(token);
+			biases.push_back(stod(token));
+			biasesGradients.push_back(0);
 		}
+		biasesVelocities = biasesGradients;
 	}
 
 	std::vector<double> Ai::Layer::computeHidden(std::vector<double> inputs)

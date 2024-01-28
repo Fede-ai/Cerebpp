@@ -7,12 +7,14 @@ namespace Mlib {
 	namespace Func {
 		//activation functions for hidden and output layers
 		enum ActFunc {
+			NoAct = -1,
 			Sigmoid = 0,
 			ReLU = 1,
 			Softmax = 2
 		};
 		//loss function for output layer
 		enum LossFunc {
+			NoLoss = -1,
 			SquaredError = 0,
 			CrossEntropy = 1
 		};
@@ -74,10 +76,10 @@ namespace Mlib {
 			std::vector<double> outputAct(std::vector<double> values) const;
 
 			std::vector<double> lossAndOutputActDer(std::vector<double> values, std::vector<double> targets) const;
-			Func::ActFunc hidAct, outAct;
-			Func::LossFunc lossFunc;
+			Func::ActFunc hidAct = Func::NoAct, outAct = Func::NoAct;
+			Func::LossFunc lossFunc = Func::NoLoss;
 
-			const int numBef, numAft;
+			int numBef = -1, numAft = -1;
 			//relative to the nodes after
 			std::vector<double> biases;
 			//access a specific weight value. notation: weights[nodeBef][nodeAft]
@@ -97,7 +99,7 @@ namespace Mlib {
 		};
 
 		std::vector<Layer> layers;
-		Func::ActFunc hidAct, outAct;
-		Func::LossFunc lossFunc;
+		Func::ActFunc hidAct = Func::NoAct, outAct = Func::NoAct;
+		Func::LossFunc lossFunc = Func::NoLoss;
 	};
 }
