@@ -48,11 +48,7 @@ namespace Mlib {
 
 	std::vector<double> Ai::computePrediction(Datapoint datapoint)
 	{
-		std::vector<double> dataDouble;
-		for (auto d : datapoint.data)
-			dataDouble.push_back(d/255.f);
-
-		std::vector<double> values = layers[0].computeHidden(dataDouble);
+		std::vector<double> values = layers[0].computeHidden(datapoint.data);
 		for (int layer = 1; layer < layers.size() - 1; layer++)
 			values = layers[layer].computeHidden(values);
 		values = layers[layers.size() - 1].computeOutput(values);

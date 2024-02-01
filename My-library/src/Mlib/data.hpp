@@ -55,13 +55,19 @@ namespace Mlib {
 	struct Batch
 	{
 		//create a batch taking 'n' random datapoints from the given dataset
-		Batch(Dataset dataset, int n)
+		Batch(Dataset& dataset, int n)
 		{
+			if (dataset.data.size() < n) 
+				std::exit(-104);
+			std::vector<int> index;
+			for (int i = 0; i < dataset.data.size(); i++)
+				index.push_back(i);
+
 			for (int i = 0; i < n; i++)
 			{
-				int index = Mlib::random(0, dataset.data.size() - 1);
-				data.push_back(dataset.data[index]);
-				dataset.data.erase(dataset.data.begin() + index);
+				int num = Mlib::random(0, index.size() - 1);
+				data.push_back(std::ref(dataset.data[num]));
+				index.erase(index.begin() + num);
 			}
 		}
 		//create an empty batch

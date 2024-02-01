@@ -1,6 +1,7 @@
 #include "../util.hpp"
 #include <sstream>
 #include <cmath>
+#include <iostream>
 #include "../ai.hpp"
 
 namespace Mlib {
@@ -79,8 +80,10 @@ namespace Mlib {
 
 	std::vector<double> Ai::Layer::computeHidden(std::vector<double> inputs)
 	{
-		if (inputs.size() != numBef)
-			std::exit(1000);
+		if (inputs.size() != numBef) {
+			std::cout << "ERROR: layer size: " << numBef << ", layer input " << inputs.size();
+			std::exit(-103);
+		}
 
 		inputValues = inputs;
 
@@ -116,8 +119,10 @@ namespace Mlib {
 	}
 	std::vector<double> Ai::Layer::computeOutput(std::vector<double> inputs)
 	{
-		if (inputs.size() != numBef)
-			std::exit(1000);
+		if (inputs.size() != numBef) {
+			std::cout << "ERROR: layer size: " << numBef << ", layer input " << inputs.size();
+			std::exit(-103);
+		}
 
 		inputValues = inputs;
 
@@ -209,7 +214,7 @@ namespace Mlib {
 			for (int i = 0; i < values.size(); i++)
 				loss += -targets[i] * std::log(values[i] + 1e-15);
 		}
-		else std::exit(-100);
+		else std::exit(-102);
 
 		return loss;
 	}
@@ -275,7 +280,7 @@ namespace Mlib {
 		}
 		else
 		{
-			std::exit(-100);
+			std::exit(-101);
 		}
 
 		return derivatives;

@@ -28,6 +28,9 @@
     <ClCompile Include="src\Mlib\Ai\layer.cpp" />
     <ClCompile Include="src\Mlib\Util\util.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="errors.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

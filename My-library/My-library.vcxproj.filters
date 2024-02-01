@@ -33,4 +33,7 @@
       <Filter>Ai</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="errors.txt" />
+  </ItemGroup>
 </Project>
