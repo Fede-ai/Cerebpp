@@ -1,15 +1,15 @@
 #pragma once
 #include <vector>
-#include "util.hpp"
 #include <fstream>
 #include <functional>
 #include <string>
+#include "../util.hpp"
 
 namespace Mlib {
 	struct Datapoint
 	{
 		//setup the datapoint with the given data, target and id values
-		Datapoint(std::vector<double> inData, std::vector<double> inTarget, int inId)
+		Datapoint(std::vector<float> inData, std::vector<float> inTarget, int inId)
 			:
 			data(inData), target(inTarget), id(inId)
 		{
@@ -17,8 +17,8 @@ namespace Mlib {
 		//create an empty datapoint
 		Datapoint() {}
 
-		std::vector<double> data;
-		std::vector<double> target;
+		std::vector<float> data;
+		std::vector<float> target;
 		int id = NULL;
 	};
 

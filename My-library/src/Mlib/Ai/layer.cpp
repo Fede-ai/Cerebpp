@@ -26,8 +26,8 @@ namespace Mlib {
 		//setup weights
 		for (int bef = 0; bef < numBef; bef++)
 		{
-			std::vector<double> partialWeights;
-			std::vector<double> partialWeightsGradients;
+			std::vector<float> partialWeights;
+			std::vector<float> partialWeightsGradients;
 			for (int aft = 0; aft < numAft; aft++)
 			{
 				if (rand)
@@ -55,8 +55,8 @@ namespace Mlib {
 		//setup weights
 		for (int bef = 0; bef < numBef; bef++)
 		{
-			std::vector<double> partialWeights;
-			std::vector<double> partialWeightsGradients;
+			std::vector<float> partialWeights;
+			std::vector<float> partialWeightsGradients;
 			for (int aft = 0; aft < numAft; aft++)
 			{
 				getline(layerStrean, token, ',');
@@ -78,7 +78,7 @@ namespace Mlib {
 		biasesVelocities = biasesGradients;
 	}
 
-	std::vector<double> Ai::Layer::computeHidden(std::vector<double> inputs)
+	std::vector<float> Ai::Layer::computeHidden(std::vector<float> inputs)
 	{
 		if (inputs.size() != numBef) {
 			std::cout << "ERROR: layer size: " << numBef << ", layer input " << inputs.size();
@@ -90,7 +90,7 @@ namespace Mlib {
 		weightedValues.clear();
 		for (int aft = 0; aft < numAft; aft++)
 		{
-			double weightedValue = biases[aft];
+			float weightedValue = biases[aft];
 			for (int bef = 0; bef < numBef; bef++)
 				weightedValue += inputs[bef] * weights[bef][aft];
 			weightedValues.push_back(weightedValue);
@@ -99,17 +99,17 @@ namespace Mlib {
 		activatedValues = hiddenAct(weightedValues);
 		return activatedValues;
 	}
-	std::vector<double> Ai::Layer::computeHiddenNodeValues(std::vector<double> nodeValuesAfter, Layer layerAft) const
+	std::vector<float> Ai::Layer::computeHiddenNodeValues(std::vector<float> nodeValuesAfter, Layer layerAft) const
 	{
-		std::vector<double> nodeValues;
-		std::vector<double> actDer = hiddenActDer(weightedValues);
+		std::vector<float> nodeValues;
+		std::vector<float> actDer = hiddenActDer(weightedValues);
 
 		for (int aft = 0; aft < numAft; aft++)
 		{
-			double nodeValue = 0;
+			float nodeValue = 0;
 			for (int aftAft = 0; aftAft < layerAft.numAft; aftAft++)
 			{
-				double inputDerivative = layerAft.weights[aft][aftAft];
+				float inputDerivative = layerAft.weights[aft][aftAft];
 				nodeValue += inputDerivative * nodeValuesAfter[aftAft];
 			}
 			nodeValues.push_back(nodeValue * actDer[aft]);
@@ -117,7 +117,7 @@ namespace Mlib {
 
 		return nodeValues;
 	}
-	std::vector<double> Ai::Layer::computeOutput(std::vector<double> inputs)
+	std::vector<float> Ai::Layer::computeOutput(std::vector<float> inputs)
 	{
 		if (inputs.size() != numBef) {
 			std::cout << "ERROR: layer size: " << numBef << ", layer input " << inputs.size();
@@ -129,7 +129,7 @@ namespace Mlib {
 		weightedValues.clear();
 		for (int aft = 0; aft < numAft; aft++)
 		{
-			double weightedValue = biases[aft];
+			float weightedValue = biases[aft];
 			for (int bef = 0; bef < numBef; bef++)
 				weightedValue += inputs[bef] * weights[bef][aft];
 			weightedValues.push_back(weightedValue);
@@ -138,10 +138,10 @@ namespace Mlib {
 		activatedValues = outputAct(weightedValues);
 		return activatedValues;
 	}
-	std::vector<double> Ai::Layer::computeOutputNodeValues(std::vector<double> targets) const
+	std::vector<float> Ai::Layer::computeOutputNodeValues(std::vector<float> targets) const
 	{
-		std::vector<double> nodeValues;
-		std::vector<double> lossAndActDer = lossAndOutputActDer(activatedValues, targets);
+		std::vector<float> nodeValues;
+		std::vector<float> lossAndActDer = lossAndOutputActDer(activatedValues, targets);
 
 		for (int aft = 0; aft < numAft; aft++)
 			nodeValues.push_back(lossAndActDer[aft]);
@@ -149,13 +149,13 @@ namespace Mlib {
 		return nodeValues;
 	}
 
-	void Ai::Layer::updateGradients(std::vector<double> nodeValues)
+	void Ai::Layer::updateGradients(std::vector<float> nodeValues)
 	{
 		for (int bef = 0; bef < numBef; bef++)
 		{
 			for (int aft = 0; aft < numAft; aft++)
 			{
-				double weightDerivative = inputValues[bef] * nodeValues[aft];
+				float weightDerivative = inputValues[bef] * nodeValues[aft];
 				weightsGradients[bef][aft] += weightDerivative;
 			}
 		}
@@ -165,13 +165,13 @@ namespace Mlib {
 			biasesGradients[aft] += nodeValues[aft];
 		}
 	}
-	void Ai::Layer::applyGradients(double learnRate, double momentum, int batchSize)
+	void Ai::Layer::applyGradients(float learnRate, float momentum, int batchSize)
 	{
 		for (int bef = 0; bef < numBef; bef++)
 		{
 			for (int aft = 0; aft < numAft; aft++)
 			{
-				weightsGradients[bef][aft] /= double(batchSize);
+				weightsGradients[bef][aft] /= float(batchSize);
 				weightsVelocities[bef][aft] = momentum * weightsVelocities[bef][aft] + (1 - momentum) * weightsGradients[bef][aft];
 				weights[bef][aft] -= weightsVelocities[bef][aft] * learnRate;
 			}
@@ -179,7 +179,7 @@ namespace Mlib {
 		
 		for (int aft = 0; aft < numAft; aft++)
 		{
-			biasesGradients[aft] /= double(batchSize);
+			biasesGradients[aft] /= float(batchSize);
 			biasesVelocities[aft] = momentum * biasesVelocities[aft] + (1 - momentum) * biasesGradients[aft];
 			biases[aft] -= biasesVelocities[aft] * learnRate;
 		}
@@ -200,9 +200,9 @@ namespace Mlib {
 		}
 	}
 
-	double Ai::Layer::loss(std::vector<double> values, std::vector<double> targets) const
+	float Ai::Layer::loss(std::vector<float> values, std::vector<float> targets) const
 	{
-		double loss = 0.0;
+		float loss = 0.0;
 
 		if (lossFunc == Func::LossFunc::SquaredError)
 		{
@@ -235,9 +235,9 @@ namespace Mlib {
 		return ss.str();
 	}
 
-	std::vector<double> Ai::Layer::hiddenAct(std::vector<double> values) const
+	std::vector<float> Ai::Layer::hiddenAct(std::vector<float> values) const
 	{
-		std::vector<double> activated;
+		std::vector<float> activated;
 
 		if (hidAct == Func::ActFunc::Sigmoid)
 		{
@@ -247,7 +247,7 @@ namespace Mlib {
 		else if (hidAct == Func::ActFunc::ReLU)
 		{
 			for (auto v : values)
-				activated.push_back(std::max(v, double(0)));
+				activated.push_back(std::max(v, float(0)));
 		}
 		else
 		{
@@ -256,15 +256,15 @@ namespace Mlib {
 
 		return activated;
 	}
-	std::vector<double> Ai::Layer::hiddenActDer(std::vector<double> values) const
+	std::vector<float> Ai::Layer::hiddenActDer(std::vector<float> values) const
 	{
-		std::vector<double> derivatives;
+		std::vector<float> derivatives;
 
 		if (hidAct == Func::ActFunc::Sigmoid)
 		{
 			for (auto v : values)
 			{
-				double activated = 1.f / (1 + exp(-v));
+				float activated = 1.f / (1 + exp(-v));
 				derivatives.push_back(activated * (1 - activated));
 			}
 		}
@@ -285,9 +285,9 @@ namespace Mlib {
 
 		return derivatives;
 	}
-	std::vector<double> Ai::Layer::outputAct(std::vector<double> values) const
+	std::vector<float> Ai::Layer::outputAct(std::vector<float> values) const
 	{
-		std::vector<double> activated;
+		std::vector<float> activated;
 
 		if (outAct == Func::ActFunc::Sigmoid)
 		{
@@ -296,13 +296,13 @@ namespace Mlib {
 		}
 		else if (outAct == Func::ActFunc::Softmax)
 		{
-			double expSum = 0;
-			for (double v : values) {
-				double exp = std::exp(v);
+			float expSum = 0;
+			for (float v : values) {
+				float exp = std::exp(v);
 				activated.push_back(exp);
 				expSum += exp;
 			}
-			for (double& v : activated) {
+			for (float& v : activated) {
 				v /= expSum;
 			}
 		}
@@ -313,9 +313,9 @@ namespace Mlib {
 
 		return activated;
 	}
-	std::vector<double> Ai::Layer::lossAndOutputActDer(std::vector<double> values, std::vector<double> targets) const
+	std::vector<float> Ai::Layer::lossAndOutputActDer(std::vector<float> values, std::vector<float> targets) const
 	{
-		std::vector<double> nodesLossesDer;
+		std::vector<float> nodesLossesDer;
 
 		if (outAct == Func::ActFunc::Softmax && lossFunc == Func::LossFunc::CrossEntropy)
 		{
@@ -326,7 +326,7 @@ namespace Mlib {
 		{
 			for (int i = 0; i < values.size(); i++)
 			{
-				double sigm = 1.f / (1 + exp(-values[i]));
+				float sigm = 1.f / (1 + exp(-values[i]));
 				nodesLossesDer.push_back(sigm * (1 - sigm) * 2 * (values[i] - targets[i]));
 			}
 		}

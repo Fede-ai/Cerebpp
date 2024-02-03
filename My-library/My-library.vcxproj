@@ -20,8 +20,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Mlib\ai.hpp" />
-    <ClInclude Include="src\Mlib\data.hpp" />
     <ClInclude Include="src\Mlib\util.hpp" />
+    <ClInclude Include="src\Mlib\Util\data.hpp" />
+    <ClInclude Include="src\Mlib\Util\io.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Mlib\Ai\ai.cpp" />

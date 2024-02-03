@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
-#include "data.hpp"
+#include "Util/data.hpp"
 
 namespace Mlib {
 	namespace Func {
@@ -29,11 +29,11 @@ namespace Mlib {
 		Ai(std::string path);
 
 		//compute the predicted target values for a given datapoint
-		std::vector<double> computePrediction(Datapoint datapoint);
+		std::vector<float> computePrediction(Datapoint datapoint);
 		//calculate the average loos across the given batch
-		double loss(Batch batch);
+		float loss(Batch batch);
 		//train the ai on a given batch
-		void train(Batch batch, double learnRate, double momentum);
+		void train(Batch batch, float learnRate, float momentum);
 		//save the ai parameters in a .txt file (do not include the file extension in the path parameter)
 		void save(std::string path) const;
 
@@ -50,52 +50,52 @@ namespace Mlib {
 			Layer(int inNumBef, int inNumAft, bool rand, Func::ActFunc inHidAct, Func::ActFunc inOutAct, Func::LossFunc inLossFunc);
 			//load layer from size, functions and a string
 			Layer(int inNumBef, int inNumAft, Func::ActFunc inHidAct, Func::ActFunc inOutAct, Func::LossFunc inLossFunc, std::string string);
-			std::vector<double> computeHidden(std::vector<double> inputs);
+			std::vector<float> computeHidden(std::vector<float> inputs);
 			//used for backpropagation
-			std::vector<double> computeHiddenNodeValues(std::vector<double> nodeValuesAfter, Layer layerAft) const;
-			std::vector<double> computeOutput(std::vector<double> inputs);
+			std::vector<float> computeHiddenNodeValues(std::vector<float> nodeValuesAfter, Layer layerAft) const;
+			std::vector<float> computeOutput(std::vector<float> inputs);
 			//used for backpropagation
-			std::vector<double> computeOutputNodeValues(std::vector<double> targets) const;
+			std::vector<float> computeOutputNodeValues(std::vector<float> targets) const;
 
 			//update the gradients 
-			void updateGradients(std::vector<double> nodeValues);
+			void updateGradients(std::vector<float> nodeValues);
 			//update all parameters applying the gradients
-			void applyGradients(double learnRate, double momentum, int batchSize);
+			void applyGradients(float learnRate, float momentum, int batchSize);
 			//set all gradients to 0
 			void clearGradients();
 
 			//calculate the losses for each value-target pair
-			double loss(std::vector<double> values, std::vector<double> targets) const;
+			float loss(std::vector<float> values, std::vector<float> targets) const;
 
 			//save the layer to a string format
 			std::string toString() const;
 
 		private:
-			std::vector<double> hiddenAct(std::vector<double> values) const;
-			std::vector<double> hiddenActDer(std::vector<double> values) const;
-			std::vector<double> outputAct(std::vector<double> values) const;
+			std::vector<float> hiddenAct(std::vector<float> values) const;
+			std::vector<float> hiddenActDer(std::vector<float> values) const;
+			std::vector<float> outputAct(std::vector<float> values) const;
 
-			std::vector<double> lossAndOutputActDer(std::vector<double> values, std::vector<double> targets) const;
+			std::vector<float> lossAndOutputActDer(std::vector<float> values, std::vector<float> targets) const;
 			Func::ActFunc hidAct = Func::NoAct, outAct = Func::NoAct;
 			Func::LossFunc lossFunc = Func::NoLoss;
 
 			int numBef = -1, numAft = -1;
 			//relative to the nodes after
-			std::vector<double> biases;
+			std::vector<float> biases;
 			//access a specific weight value. notation: weights[nodeBef][nodeAft]
-			std::vector<std::vector<double>> weights;
+			std::vector<std::vector<float>> weights;
 
 			//relative to the nodes after
-			std::vector<double> biasesGradients, biasesVelocities;
+			std::vector<float> biasesGradients, biasesVelocities;
 			//notation: weightsGradients[nodeBef][nodeAft]
-			std::vector<std::vector<double>> weightsGradients, weightsVelocities;
+			std::vector<std::vector<float>> weightsGradients, weightsVelocities;
 
 			//the activatedValues of the layer before, one for each node bef
-			std::vector<double> inputValues;
+			std::vector<float> inputValues;
 			//weighted sum of the activatedValues of the layer before, one for each node aft
-			std::vector<double> weightedValues;
+			std::vector<float> weightedValues;
 			//weightedValues after passing through the activation function, one for each node aft
-			std::vector<double> activatedValues;
+			std::vector<float> activatedValues;
 		};
 
 		std::vector<Layer> layers;

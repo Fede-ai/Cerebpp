@@ -46,9 +46,9 @@ namespace Mlib {
 		file.close();
 	}
 
-	std::vector<double> Ai::computePrediction(Datapoint datapoint)
+	std::vector<float> Ai::computePrediction(Datapoint datapoint)
 	{
-		std::vector<double> values = layers[0].computeHidden(datapoint.data);
+		std::vector<float> values = layers[0].computeHidden(datapoint.data);
 		for (int layer = 1; layer < layers.size() - 1; layer++)
 			values = layers[layer].computeHidden(values);
 		values = layers[layers.size() - 1].computeOutput(values);
@@ -58,7 +58,7 @@ namespace Mlib {
 	void Ai::backProp(Datapoint datapoint)
 	{
 		computePrediction(datapoint);
-		std::vector<double> nodeValues = layers[layers.size() - 1].computeOutputNodeValues(datapoint.target);
+		std::vector<float> nodeValues = layers[layers.size() - 1].computeOutputNodeValues(datapoint.target);
 		layers[layers.size() - 1].updateGradients(nodeValues);
 
 		for (int layer = layers.size() - 2; layer >= 0; layer--)
@@ -67,15 +67,15 @@ namespace Mlib {
 			layers[layer].updateGradients(nodeValues);
 		}
 	}
-	double Ai::loss(Batch batch)
+	float Ai::loss(Batch batch)
 	{
-		double loss = 0;
+		float loss = 0;
 		for (auto d : batch.data)
 			loss += layers[0].loss(computePrediction(d), d.get().target);
 		return (loss / batch.data.size());
 	}
 
-	void Ai::train(Batch batch, double learnRate, double momentum)
+	void Ai::train(Batch batch, float learnRate, float momentum)
 	{
 		for (auto& d : batch.data)
 			backProp(d.get());
