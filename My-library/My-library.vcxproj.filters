@@ -7,19 +7,31 @@
     <Filter Include="Util">
       <UniqueIdentifier>{866cea93-f0c7-434a-a7f3-00bb84494119}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Io">
+      <UniqueIdentifier>{0192b2cd-8c6b-432a-b4d1-3a1ca824f78b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{a289729e-3c34-4a09-b9f4-a897e8f1ff72}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Mlib\util.hpp">
-      <Filter>Util</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Mlib\ai.hpp">
+    <ClInclude Include="src\Mlib\Ai\ai.hpp">
       <Filter>Ai</Filter>
     </ClInclude>
-    <ClInclude Include="src\Mlib\Util\data.hpp">
+    <ClInclude Include="src\Mlib\Io\io.hpp">
+      <Filter>Io</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Mlib\Util\util.hpp">
       <Filter>Util</Filter>
     </ClInclude>
-    <ClInclude Include="src\Mlib\Util\io.hpp">
-      <Filter>Util</Filter>
+    <ClInclude Include="src\Mlib\Data\datapoint.hpp">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Mlib\Data\vec2.hpp">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Mlib\Ai\layer.hpp">
+      <Filter>Ai</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -31,6 +43,12 @@
     </ClCompile>
     <ClCompile Include="src\Mlib\Ai\layer.cpp">
       <Filter>Ai</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Mlib\Io\io.cpp">
+      <Filter>Io</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Mlib\Data\datapoint.cpp">
+      <Filter>Data</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
