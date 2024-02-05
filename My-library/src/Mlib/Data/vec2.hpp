@@ -4,10 +4,15 @@ namespace Mlib
 {
 	template <typename T> struct Vec2
 	{
-		Vec2(T inX, T inY) : x(inX), y(inY) {}
+		Vec2() {};
+		Vec2(T inX, T inY) : x(inX), y(inY) {};
 		
 		template<typename A> operator Vec2<A>() const {
 			return Vec2<A>(static_cast<A>(x), static_cast<A>(y));
+		}
+
+		template<typename A> Vec2<T> operator+(Vec2<A> o) const {
+			return Vec2<T>(x + o.x, y + o.y);
 		}
 
 		T x;

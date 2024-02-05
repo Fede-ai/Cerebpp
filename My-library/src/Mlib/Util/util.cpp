@@ -2,6 +2,7 @@
 #include <chrono>
 #include <thread>
 #include <random>
+#include <wtypes.h>
 
 namespace Mlib {
 	size_t getTime()
@@ -21,5 +22,10 @@ namespace Mlib {
 
 		std::uniform_int_distribution<std::mt19937::result_type> dist6(min, max);
 		return dist6(rng);
+	}
+
+	Vec2i displaySize()
+	{
+		return Vec2i(GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN));
 	}
 }
