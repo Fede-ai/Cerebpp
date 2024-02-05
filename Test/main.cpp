@@ -1,11 +1,13 @@
 #include <iostream>
 #include "Mlib/Util/util.hpp"
 #include "Mlib/Io/mouse.hpp"
+#include "Mlib/Ai/ai.hpp"
 
 int main()
 {
-	Mlib::setMousePos({ 100, 0 }, true);
-	Mlib::setMouseState(Mlib::MouseButton::Right, true);
-	Mlib::setMouseState(Mlib::MouseButton::Right, false);
+	while (true)
+	{
+		Mlib::sleep(1);
+	}
 	return 0;
 }

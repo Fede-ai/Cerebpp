@@ -18,9 +18,6 @@
     <ClInclude Include="src\Mlib\Ai\ai.hpp">
       <Filter>Ai</Filter>
     </ClInclude>
-    <ClInclude Include="src\Mlib\Io\io.hpp">
-      <Filter>Io</Filter>
-    </ClInclude>
     <ClInclude Include="src\Mlib\Util\util.hpp">
       <Filter>Util</Filter>
     </ClInclude>
@@ -33,6 +30,12 @@
     <ClInclude Include="src\Mlib\Ai\layer.hpp">
       <Filter>Ai</Filter>
     </ClInclude>
+    <ClInclude Include="src\Mlib\Io\mouse.hpp">
+      <Filter>Io</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Mlib\Io\keyboard.hpp">
+      <Filter>Io</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Mlib\Util\util.cpp">
@@ -44,11 +47,14 @@
     <ClCompile Include="src\Mlib\Ai\layer.cpp">
       <Filter>Ai</Filter>
     </ClCompile>
-    <ClCompile Include="src\Mlib\Io\io.cpp">
-      <Filter>Io</Filter>
-    </ClCompile>
     <ClCompile Include="src\Mlib\Data\datapoint.cpp">
       <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Mlib\Io\mouse.cpp">
+      <Filter>Io</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Mlib\Io\keyboard.cpp">
+      <Filter>Io</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

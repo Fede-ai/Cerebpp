@@ -4,7 +4,7 @@
 #include <sstream>
 
 namespace Mlib {
-	Ai::Ai(std::vector<int> inSizes, Func::ActFunc inHidAct, Func::ActFunc inOutAct, Func::LossFunc inLossFunc, bool rand)
+	Ai::Ai(std::vector<int> inSizes, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc, bool rand)
 		:
 		hidAct(inHidAct),
 		outAct(inOutAct),
@@ -31,11 +31,11 @@ namespace Mlib {
 		getline(file, line);
 		std::istringstream funcStream(line);
 		getline(funcStream, token, ',');
-		hidAct = static_cast<Func::ActFunc>(stoi(token));
+		hidAct = static_cast<ActFunc>(stoi(token));
 		getline(funcStream, token, ',');
-		outAct = static_cast<Func::ActFunc>(stoi(token));
+		outAct = static_cast<ActFunc>(stoi(token));
 		getline(funcStream, token, ',');
-		lossFunc = static_cast<Func::LossFunc>(stoi(token));
+		lossFunc = static_cast<LossFunc>(stoi(token));
 
 		for (int i = 1; i < sizes.size(); i++)
 		{

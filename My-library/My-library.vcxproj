@@ -23,6 +23,7 @@
     <ClInclude Include="src\Mlib\Ai\layer.hpp" />
     <ClInclude Include="src\Mlib\Data\datapoint.hpp" />
     <ClInclude Include="src\Mlib\Data\vec2.hpp" />
+    <ClInclude Include="src\Mlib\Io\keyboard.hpp" />
     <ClInclude Include="src\Mlib\Io\mouse.hpp" />
     <ClInclude Include="src\Mlib\Util\util.hpp" />
   </ItemGroup>
@@ -30,6 +31,7 @@
     <ClCompile Include="src\Mlib\Ai\ai.cpp" />
     <ClCompile Include="src\Mlib\Ai\layer.cpp" />
     <ClCompile Include="src\Mlib\Data\datapoint.cpp" />
+    <ClCompile Include="src\Mlib\Io\keyboard.cpp" />
     <ClCompile Include="src\Mlib\Io\mouse.cpp" />
     <ClCompile Include="src\Mlib\Util\util.cpp" />
   </ItemGroup>

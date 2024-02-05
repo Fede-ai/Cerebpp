@@ -3,8 +3,10 @@
 #include <string>
 #include "../Data/datapoint.hpp"
 
-namespace Mlib {
-	namespace Func {
+namespace Mlib 
+{
+	class Ai {
+	public:	
 		//activation functions for hidden and output layers
 		enum ActFunc {
 			NoAct = -1,
@@ -18,13 +20,10 @@ namespace Mlib {
 			SquaredError = 0,
 			CrossEntropy = 1
 		};
-	};
 
-	class Ai {
-	public:
 		/*creare a new ai with the given size and function. the 'rand' parameter determinates whether the
 		weights and biases should be initialized as 0 or as a random number between -1 and 1*/
-		Ai(std::vector<int> inSizes, Func::ActFunc inHidAct, Func::ActFunc inOutAct, Func::LossFunc inLossFunc, bool rand = false);
+		Ai(std::vector<int> inSizes, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc, bool rand = false);
 		//load the ai parameters from a .txt file (do not include the file extension in the path parameter)
 		Ai(std::string path);
 
@@ -46,7 +45,7 @@ namespace Mlib {
 		class Layer;
 		std::vector<Layer> layers;
 
-		Func::ActFunc hidAct = Func::NoAct, outAct = Func::NoAct;
-		Func::LossFunc lossFunc = Func::NoLoss;
+		ActFunc hidAct = NoAct, outAct = NoAct;
+		LossFunc lossFunc = NoLoss;
 	};
 }

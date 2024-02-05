@@ -5,7 +5,7 @@
 #include "layer.hpp"
 
 namespace Mlib {
-	Ai::Layer::Layer(int inNumBef, int inNumAft, bool rand, Func::ActFunc inHidAct, Func::ActFunc inOutAct, Func::LossFunc inLossFunc)
+	Ai::Layer::Layer(int inNumBef, int inNumAft, bool rand, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc)
 		:
 		numBef(inNumBef),
 		numAft(inNumAft),
@@ -41,7 +41,7 @@ namespace Mlib {
 		}
 		weightsVelocities = weightsGradients;
 	}
-	Ai::Layer::Layer(int inNumBef, int inNumAft, Func::ActFunc inHidAct, Func::ActFunc inOutAct, Func::LossFunc inLossFunc, std::string string)
+	Ai::Layer::Layer(int inNumBef, int inNumAft, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc, std::string string)
 		:
 		numBef(inNumBef),
 		numAft(inNumAft),
@@ -204,12 +204,12 @@ namespace Mlib {
 	{
 		float loss = 0.0;
 
-		if (lossFunc == Func::LossFunc::SquaredError)
+		if (lossFunc == LossFunc::SquaredError)
 		{
 			for (int i = 0; i < values.size(); i++)
 				loss += std::pow((targets[i] - values[i]), 2);
 		}
-		else if (lossFunc == Func::LossFunc::CrossEntropy)
+		else if (lossFunc == LossFunc::CrossEntropy)
 		{
 			for (int i = 0; i < values.size(); i++)
 				loss += -targets[i] * std::log(values[i] + 1e-15);
@@ -239,12 +239,12 @@ namespace Mlib {
 	{
 		std::vector<float> activated;
 
-		if (hidAct == Func::ActFunc::Sigmoid)
+		if (hidAct == ActFunc::Sigmoid)
 		{
 			for (auto v : values)
 				activated.push_back(1.f / (1 + exp(-v)));
 		}
-		else if (hidAct == Func::ActFunc::ReLU)
+		else if (hidAct == ActFunc::ReLU)
 		{
 			for (auto v : values)
 				activated.push_back(std::max(v, float(0)));
@@ -260,7 +260,7 @@ namespace Mlib {
 	{
 		std::vector<float> derivatives;
 
-		if (hidAct == Func::ActFunc::Sigmoid)
+		if (hidAct == ActFunc::Sigmoid)
 		{
 			for (auto v : values)
 			{
@@ -268,7 +268,7 @@ namespace Mlib {
 				derivatives.push_back(activated * (1 - activated));
 			}
 		}
-		else if (hidAct == Func::ActFunc::ReLU)
+		else if (hidAct == ActFunc::ReLU)
 		{
 			for (auto v : values)
 			{
@@ -289,12 +289,12 @@ namespace Mlib {
 	{
 		std::vector<float> activated;
 
-		if (outAct == Func::ActFunc::Sigmoid)
+		if (outAct == ActFunc::Sigmoid)
 		{
 			for (auto v : values)
 				activated.push_back(1.f / (1 + exp(-v)));
 		}
-		else if (outAct == Func::ActFunc::Softmax)
+		else if (outAct == ActFunc::Softmax)
 		{
 			float expSum = 0;
 			for (float v : values) {
@@ -317,12 +317,12 @@ namespace Mlib {
 	{
 		std::vector<float> nodesLossesDer;
 
-		if (outAct == Func::ActFunc::Softmax && lossFunc == Func::LossFunc::CrossEntropy)
+		if (outAct == ActFunc::Softmax && lossFunc == LossFunc::CrossEntropy)
 		{
 			for (int i = 0; i < values.size(); i++)
 				nodesLossesDer.push_back(values[i] - targets[i]);
 		}
-		else if (outAct == Func::ActFunc::Sigmoid && lossFunc == Func::LossFunc::SquaredError)
+		else if (outAct == ActFunc::Sigmoid && lossFunc == LossFunc::SquaredError)
 		{
 			for (int i = 0; i < values.size(); i++)
 			{
