@@ -6,42 +6,42 @@ namespace Mlib
 {
 	namespace Mouse
 	{
-		void setButState(MouseButton but, bool down)
+		void setState(Button but, bool down)
 		{
 			INPUT in;
 			in.type = INPUT_MOUSE;
 			in.mi.time = 0;
 			in.mi.mouseData = 0;
 
-			if (but == MouseButton::Left)
+			if (but == Button::Left)
 			{
 				if (down)
 					in.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
 				else
 					in.mi.dwFlags = MOUSEEVENTF_LEFTUP;
 			}
-			else if (but == MouseButton::Middle)
+			else if (but == Button::Middle)
 			{
 				if (down)
 					in.mi.dwFlags = MOUSEEVENTF_MIDDLEDOWN;
 				else
 					in.mi.dwFlags = MOUSEEVENTF_MIDDLEUP;
 			}
-			else if (but == MouseButton::Right)
+			else if (but == Button::Right)
 			{
 				if (down)
 					in.mi.dwFlags = MOUSEEVENTF_RIGHTDOWN;
 				else
 					in.mi.dwFlags = MOUSEEVENTF_RIGHTUP;
 			}
-			else if (but == MouseButton::Side1 || but == MouseButton::Side2)
+			else if (but == Button::Side1 || but == Button::Side2)
 			{
 				if (down)
 					in.mi.dwFlags = MOUSEEVENTF_XDOWN;
 				else
 					in.mi.dwFlags = MOUSEEVENTF_XUP;
 
-				if (but == MouseButton::Side1)
+				if (but == Button::Side1)
 					in.mi.mouseData = XBUTTON1;
 				else
 					in.mi.mouseData = XBUTTON2;
@@ -49,18 +49,18 @@ namespace Mlib
 
 			SendInput(1, &in, sizeof(INPUT));
 		}
-		void setMousePos(Vec2i pos, bool relative)
+		void setPos(Vec2i pos, bool relative)
 		{
 			Vec2i targ = pos;
 			if (relative)
-				targ = getMousePos() + pos;
+				targ = getPos() + pos;
 
 			SetCursorPos(targ.x, targ.y);
 		}	
-		void simulateClick(MouseButton but)
+		void simulateClick(Button but)
 		{
-			setButState(but, true);
-			setButState(but, false);
+			setState(but, true);
+			setState(but, false);
 		}
 		void simulateScroll(int scrollValue)
 		{
@@ -76,17 +76,17 @@ namespace Mlib
 			SendInput(1, &input, sizeof(INPUT));
 		}
 
-		Vec2i getMousePos()
+		Vec2i getPos()
 		{
 			POINT pos;
 			GetCursorPos(&pos);
 			return Vec2i(pos.x, pos.y);
 		}
-		bool isButPressed(MouseButton but)
+		bool isButPressed(Button but)
 		{
 			return GetKeyState(but) < 0;
 		}
-		bool isButToggled(MouseButton but)
+		bool isButToggled(Button but)
 		{
 			return GetKeyState(but) & 0x01;
 		}
