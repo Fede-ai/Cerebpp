@@ -38,5 +38,9 @@ namespace Mlib
 		{
 			return GetKeyState(key) & 0x01;
 		}
+		bool getAsyncState(Key key)
+		{
+			return GetAsyncKeyState(key) & 0x01;
+		}
 	}
 }

@@ -5,6 +5,7 @@ namespace Mlib
 {
 	namespace Keyboard
 	{
+		//virtual key codes (3 -> 254) for evey key
 		enum Key {
 			Cancel = 0x03,
 			Backspace = 0x08,
@@ -165,10 +166,15 @@ namespace Mlib
 		void simulateStroke(Key key);
 		//simulates writing each char in a string, doesnt trigger any shift/alt/ctrl presses
 		void writeWord(std::string word);
-
-		//doc: https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getkeystate
+		
+		/*get whether a key is currently pressed (true) or not (false)
+		doc: https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getkeystate */
 		bool isKeyPressed(Key key);
-		//doc: https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getkeystate
+		/*get whether a key is currently toggled (true) or not (false)
+		//doc: https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getkeystate */
 		bool isKeyToggled(Key key);
+		/*get wheater a key has been pressed since last call
+		https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getasynckeystate */
+		bool getAsyncState(Key key);
 	}
 }

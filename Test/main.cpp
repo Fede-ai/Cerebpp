@@ -1,11 +1,14 @@
 #include <iostream>
 #include "Mlib/Util/util.hpp"
 #include "Mlib/Io/keyboard.hpp"
-#include "Mlib/Ai/ai.hpp"
 
 int main()
 {
-	Mlib::sleep(3000);
-	Mlib::Keyboard::writeWord("nice");
+	while (true)
+	{
+		std::cout << Mlib::Keyboard::getAsyncState(Mlib::Keyboard::A) << '\n';
+		Mlib::sleep(20);
+	}
+
 	return 0;
 }
