@@ -11,6 +11,12 @@ namespace Mlib
 		template<typename A> operator Vec2<A>() const {
 			return Vec2<A>(static_cast<A>(x), static_cast<A>(y));
 		}
+		template<typename A> bool operator==(const Vec2<A> o) const {
+			return (x == o.x && y == o.y);
+		}
+		template<typename A> bool operator!=(const Vec2<A> o) const {
+			return (x != o.x || y != o.y);
+		}
 
 		//addition operators
 		template<typename A> Vec2<T> operator+(const Vec2<A> o) const {
