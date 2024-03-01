@@ -1,63 +1,60 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <None Include="errors.txt" />
+  </ItemGroup>
+  <ItemGroup>
     <Filter Include="Ai">
-      <UniqueIdentifier>{d4e551f1-2ce2-44bd-be90-95094bb26e11}</UniqueIdentifier>
+      <UniqueIdentifier>{beb8a087-57e9-4b8d-bff1-93a863c48557}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Util">
-      <UniqueIdentifier>{866cea93-f0c7-434a-a7f3-00bb84494119}</UniqueIdentifier>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{b1710f60-e89a-4e5c-a3b7-ce030735a09b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Io">
-      <UniqueIdentifier>{0192b2cd-8c6b-432a-b4d1-3a1ca824f78b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Data">
-      <UniqueIdentifier>{a289729e-3c34-4a09-b9f4-a897e8f1ff72}</UniqueIdentifier>
+    <Filter Include="System">
+      <UniqueIdentifier>{9b077103-eb7e-4d2a-a44a-1e80915ff408}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Mlib\Ai\ai.hpp">
-      <Filter>Ai</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Mlib\Util\util.hpp">
-      <Filter>Util</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Mlib\Data\datapoint.hpp">
-      <Filter>Data</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Mlib\Data\vec2.hpp">
-      <Filter>Data</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Mlib\Ai\layer.hpp">
-      <Filter>Ai</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Mlib\Io\mouse.hpp">
-      <Filter>Io</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Mlib\Io\keyboard.hpp">
-      <Filter>Io</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\Mlib\Util\util.cpp">
-      <Filter>Util</Filter>
-    </ClCompile>
     <ClCompile Include="src\Mlib\Ai\ai.cpp">
       <Filter>Ai</Filter>
     </ClCompile>
     <ClCompile Include="src\Mlib\Ai\layer.cpp">
       <Filter>Ai</Filter>
     </ClCompile>
-    <ClCompile Include="src\Mlib\Data\datapoint.cpp">
-      <Filter>Data</Filter>
+    <ClCompile Include="src\Mlib\System\keyboard.cpp">
+      <Filter>System</Filter>
     </ClCompile>
-    <ClCompile Include="src\Mlib\Io\mouse.cpp">
-      <Filter>Io</Filter>
+    <ClCompile Include="src\Mlib\System\mouse.cpp">
+      <Filter>System</Filter>
     </ClCompile>
-    <ClCompile Include="src\Mlib\Io\keyboard.cpp">
-      <Filter>Io</Filter>
+    <ClCompile Include="src\Mlib\Utility\datapoint.cpp">
+      <Filter>Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="errors.txt" />
+    <ClInclude Include="src\Mlib\Ai\ai.hpp">
+      <Filter>Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Mlib\Ai\layer.hpp">
+      <Filter>Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Mlib\System\keyboard.hpp">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Mlib\System\mouse.hpp">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Mlib\Utility\datapoint.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Mlib\Utility\vec2.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Mlib\System\system.hpp">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Mlib\Utility\math.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

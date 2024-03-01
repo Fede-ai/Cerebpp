@@ -1,7 +1,5 @@
 #include "layer.hpp"
 #include <Windows.h>
-#include <fstream>
-#include <sstream>
 
 namespace Mlib {
 	Ai::Ai(std::vector<int> inSizes, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc, bool rand)

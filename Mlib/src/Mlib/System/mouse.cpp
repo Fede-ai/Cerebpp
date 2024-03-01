@@ -1,6 +1,5 @@
 #include "mouse.hpp"
 #include <Windows.h>
-#include "../Util/util.hpp"
 
 namespace Mlib
 {

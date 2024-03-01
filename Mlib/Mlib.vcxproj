@@ -19,24 +19,24 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Mlib\Ai\ai.hpp" />
-    <ClInclude Include="src\Mlib\Ai\layer.hpp" />
-    <ClInclude Include="src\Mlib\Data\datapoint.hpp" />
-    <ClInclude Include="src\Mlib\Data\vec2.hpp" />
-    <ClInclude Include="src\Mlib\Io\keyboard.hpp" />
-    <ClInclude Include="src\Mlib\Io\mouse.hpp" />
-    <ClInclude Include="src\Mlib\Util\util.hpp" />
+    <None Include="errors.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Mlib\Ai\ai.cpp" />
     <ClCompile Include="src\Mlib\Ai\layer.cpp" />
-    <ClCompile Include="src\Mlib\Data\datapoint.cpp" />
-    <ClCompile Include="src\Mlib\Io\keyboard.cpp" />
-    <ClCompile Include="src\Mlib\Io\mouse.cpp" />
-    <ClCompile Include="src\Mlib\Util\util.cpp" />
+    <ClCompile Include="src\Mlib\System\keyboard.cpp" />
+    <ClCompile Include="src\Mlib\System\mouse.cpp" />
+    <ClCompile Include="src\Mlib\Utility\datapoint.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="errors.txt" />
+    <ClInclude Include="src\Mlib\Ai\ai.hpp" />
+    <ClInclude Include="src\Mlib\Ai\layer.hpp" />
+    <ClInclude Include="src\Mlib\System\keyboard.hpp" />
+    <ClInclude Include="src\Mlib\System\mouse.hpp" />
+    <ClInclude Include="src\Mlib\System\system.hpp" />
+    <ClInclude Include="src\Mlib\Utility\datapoint.hpp" />
+    <ClInclude Include="src\Mlib\Utility\math.hpp" />
+    <ClInclude Include="src\Mlib\Utility\vec2.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

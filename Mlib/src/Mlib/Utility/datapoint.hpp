@@ -3,7 +3,7 @@
 #include <fstream>
 #include <functional>
 #include <string>
-#include "../Util/util.hpp"
+#include "../Utility/math.hpp"
 
 namespace Mlib {
 	struct Datapoint

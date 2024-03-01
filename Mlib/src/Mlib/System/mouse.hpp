@@ -1,5 +1,5 @@
 #pragma once
-#include "../Data/vec2.hpp"
+#include "../Utility/vec2.hpp"
 
 namespace Mlib
 {

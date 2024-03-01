@@ -1,8 +1,6 @@
-#include "../Util/util.hpp"
-#include <sstream>
-#include <cmath>
-#include <iostream>
 #include "layer.hpp"
+#include "../Utility/math.hpp"
+#include <iostream>
 
 namespace Mlib {
 	Ai::Layer::Layer(int inNumBef, int inNumAft, bool rand, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc)
