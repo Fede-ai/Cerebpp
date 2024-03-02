@@ -1,17 +1,18 @@
+#pragma once
 #include "../Utility/vec2.hpp"
-#include <chrono>
+#include "../Utility/time.hpp"
 #include <thread>
 #include <wtypes.h>
 
 namespace Mlib {
-	//return time in milliseconds
-	size_t getTime() {
-		return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+	//get the current system time
+	Time getTime() {
+		return Milliseconds(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
 	}
 
-	//sleep for x milliseconds
-	void sleep(int milliseconds) {
-		std::this_thread::sleep_for(std::chrono::milliseconds(milliseconds));
+	//sleep for a given amount of time
+	void sleep(Time time) {
+		std::this_thread::sleep_for(std::chrono::milliseconds(time.asMil()));
 	}
 
 	//get the size of the main display

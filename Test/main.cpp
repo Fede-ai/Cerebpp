@@ -1,14 +1,15 @@
 #include <iostream>
-#include "Mlib/Io/keyboard.hpp"
-#include "Mlib/Util/util.hpp"
+#include "Mlib/Utility/time.hpp"
+#include "Mlib/System/system.hpp"
 
 int main()
 {
-	while (true)
-	{
-		std::cout << Mlib::Keyboard::getAsyncState(Mlib::Keyboard::A) << '\n';
-		Mlib::sleep(10);
+	auto t = Mlib::getTime();
+	while (true) {
+		std::cout << int(t.asSec()) << "\n";
+		Mlib::sleep(Mlib::Seconds(1));
+		t = Mlib::getTime();
 	}
-
+	
 	return 0;
 }

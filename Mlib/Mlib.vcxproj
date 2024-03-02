@@ -36,6 +36,7 @@
     <ClInclude Include="src\Mlib\System\system.hpp" />
     <ClInclude Include="src\Mlib\Utility\datapoint.hpp" />
     <ClInclude Include="src\Mlib\Utility\math.hpp" />
+    <ClInclude Include="src\Mlib\Utility\time.hpp" />
     <ClInclude Include="src\Mlib\Utility\vec2.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
