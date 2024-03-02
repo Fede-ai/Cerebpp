@@ -31,6 +31,7 @@
   <ItemGroup>
     <ClInclude Include="src\Mlib\Ai\ai.hpp" />
     <ClInclude Include="src\Mlib\Ai\layer.hpp" />
+    <ClInclude Include="src\Mlib\System\file.hpp" />
     <ClInclude Include="src\Mlib\System\keyboard.hpp" />
     <ClInclude Include="src\Mlib\System\mouse.hpp" />
     <ClInclude Include="src\Mlib\System\system.hpp" />

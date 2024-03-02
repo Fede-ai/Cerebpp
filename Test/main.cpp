@@ -1,15 +1,9 @@
 #include <iostream>
-#include "Mlib/Utility/time.hpp"
-#include "Mlib/System/system.hpp"
+#include "Mlib/System/file.hpp"
 
 int main()
 {
-	auto t = Mlib::getTime();
-	while (true) {
-		std::cout << int(t.asSec()) << "\n";
-		Mlib::sleep(Mlib::Seconds(1));
-		t = Mlib::getTime();
-	}
+	std::cout << Mlib::getSaveFilePath("Test (*.prova)\0*.prova\0Text (*.txt)\0*.txt\0");
 	
 	return 0;
 }

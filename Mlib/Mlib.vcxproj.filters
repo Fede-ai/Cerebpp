@@ -59,5 +59,8 @@
     <ClInclude Include="src\Mlib\Utility\time.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
+    <ClInclude Include="src\Mlib\System\file.hpp">
+      <Filter>System</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
