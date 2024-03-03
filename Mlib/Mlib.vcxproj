@@ -24,9 +24,13 @@
   <ItemGroup>
     <ClCompile Include="src\Mlib\Ai\ai.cpp" />
     <ClCompile Include="src\Mlib\Ai\layer.cpp" />
+    <ClCompile Include="src\Mlib\System\file.cpp" />
     <ClCompile Include="src\Mlib\System\keyboard.cpp" />
     <ClCompile Include="src\Mlib\System\mouse.cpp" />
+    <ClCompile Include="src\Mlib\System\system.cpp" />
     <ClCompile Include="src\Mlib\Utility\datapoint.cpp" />
+    <ClCompile Include="src\Mlib\Utility\math.cpp" />
+    <ClCompile Include="src\Mlib\Utility\time.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Mlib\Ai\ai.hpp" />

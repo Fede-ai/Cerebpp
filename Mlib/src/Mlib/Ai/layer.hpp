@@ -1,3 +1,4 @@
+#pragma once
 #include "ai.hpp"
 
 namespace Mlib

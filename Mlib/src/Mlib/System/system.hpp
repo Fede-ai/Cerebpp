@@ -6,17 +6,11 @@
 
 namespace Mlib {
 	//get the current system time
-	Time getTime() {
-		return Milliseconds(std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count());
-	}
+	Time getTime();
 
 	//sleep for a given amount of time
-	void sleep(Time time) {
-		std::this_thread::sleep_for(std::chrono::milliseconds(time.asMil()));
-	}
+	void sleep(Time time);
 
 	//get the size of the main display
-	Vec2i displaySize() {
-		return Vec2i(GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN));
-	}
+	Vec2i displaySize();
 }

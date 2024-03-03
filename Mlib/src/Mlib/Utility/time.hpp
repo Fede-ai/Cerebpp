@@ -7,28 +7,16 @@ namespace Mlib {
 		//default constructor, time set to 0
 		Time() : value(0) {}
 
-		double asSec() {
-			return value / 1000.0;
-		}
-		size_t asMil() {
-			return value;
-		}
+		double asSec();
+		size_t asMil();
 
-		friend Time Seconds(double seconds);
-		friend Time Milliseconds(size_t milliseconds);
+		friend Time seconds(double seconds);
+		friend Time milliseconds(size_t milliseconds);
 
 	private:
 		size_t value = 0; //in milliseconds
 	};
 	
-	Time Seconds(double seconds) {
-		Time t;
-		t.value = seconds * 1000;
-		return t;
-	}
-	Time Milliseconds(size_t milliseconds) {
-		Time t;
-		t.value = milliseconds;
-		return t;
-	}
+	Time seconds(double seconds);
+	Time milliseconds(size_t milliseconds);
 }

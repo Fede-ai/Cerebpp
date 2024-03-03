@@ -30,6 +30,18 @@
     <ClCompile Include="src\Mlib\Utility\datapoint.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
+    <ClCompile Include="src\Mlib\Utility\time.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Mlib\System\system.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Mlib\System\file.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Mlib\Utility\math.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Mlib\Ai\ai.hpp">
