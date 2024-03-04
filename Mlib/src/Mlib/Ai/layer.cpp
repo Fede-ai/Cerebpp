@@ -15,7 +15,7 @@ namespace Mlib {
 		for (int bias = 0; bias < numAft; bias++)
 		{
 			if (rand)
-				biases.push_back(random(0, 100'000) / 100'000.f - 0.5);
+				biases.push_back(static_cast<float>(random(0, 100'000) / 100'000.f - 0.5));
 			else
 				biases.push_back(0);
 			biasesGradients.push_back(0);
@@ -29,7 +29,7 @@ namespace Mlib {
 			for (int aft = 0; aft < numAft; aft++)
 			{
 				if (rand)
-					partialWeights.push_back(random(0, 100'000) / 100'000.f - 0.5);
+					partialWeights.push_back(static_cast<float>(random(0, 100'000) / 100'000.f - 0.5));
 				else
 					partialWeights.push_back(0);
 				partialWeightsGradients.push_back(0);
@@ -58,7 +58,7 @@ namespace Mlib {
 			for (int aft = 0; aft < numAft; aft++)
 			{
 				getline(layerStrean, token, ',');
-				partialWeights.push_back(stod(token));
+				partialWeights.push_back(static_cast<float>(stod(token)));
 				partialWeightsGradients.push_back(0);
 			}
 			weights.push_back(partialWeights);
@@ -70,7 +70,7 @@ namespace Mlib {
 		for (int bias = 0; bias < numAft; bias++)
 		{
 			getline(layerStrean, token, ',');
-			biases.push_back(stod(token));
+			biases.push_back(static_cast<float>(stod(token)));
 			biasesGradients.push_back(0);
 		}
 		biasesVelocities = biasesGradients;
@@ -205,12 +205,12 @@ namespace Mlib {
 		if (lossFunc == LossFunc::SquaredError)
 		{
 			for (int i = 0; i < values.size(); i++)
-				loss += std::pow((targets[i] - values[i]), 2);
+				loss += static_cast<float>(std::pow((targets[i] - values[i]), 2));
 		}
 		else if (lossFunc == LossFunc::CrossEntropy)
 		{
 			for (int i = 0; i < values.size(); i++)
-				loss += -targets[i] * std::log(values[i] + 1e-15);
+				loss += -targets[i] * static_cast<float>(std::log(values[i] + 1e-15));
 		}
 		else std::exit(-102);
 

@@ -59,7 +59,7 @@ namespace Mlib {
 		std::vector<float> nodeValues = layers[layers.size() - 1].computeOutputNodeValues(datapoint.target);
 		layers[layers.size() - 1].updateGradients(nodeValues);
 
-		for (int layer = layers.size() - 2; layer >= 0; layer--)
+		for (int layer = static_cast<int>(layers.size()) - 2; layer >= 0; layer--)
 		{
 			nodeValues = layers[layer].computeHiddenNodeValues(nodeValues, layers[layer + 1]);
 			layers[layer].updateGradients(nodeValues);
@@ -68,7 +68,7 @@ namespace Mlib {
 	float Ai::loss(Batch batch)
 	{
 		float loss = 0;
-		for (auto d : batch.data)
+		for (const auto& d : batch.data)
 			loss += layers[0].loss(computePrediction(d), d.get().target);
 		return (loss / batch.data.size());
 	}
@@ -79,7 +79,7 @@ namespace Mlib {
 			backProp(d.get());
 
 		for (auto& layer : layers)
-			layer.applyGradients(learnRate, momentum, batch.data.size());
+			layer.applyGradients(learnRate, momentum, static_cast<int>(batch.data.size()));
 
 		for (auto& layer : layers)
 			layer.clearGradients();

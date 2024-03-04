@@ -1,9 +1,12 @@
 #include <iostream>
-#include "Mlib/System/file.hpp"
+#include "Mlib/Utility/time.hpp"
+#include "Mlib/System/system.hpp"
 
 int main()
 {
-	std::cout << Mlib::getSaveFilePath("Test (*.prova)\0*.prova\0Text (*.txt)\0*.txt\0");
-	
+	Mlib::Vec2f ok(32.2, 2.13);
+
+	std::cout << (ok + Mlib::Vec2<char>(21, 2)).x;
+
 	return 0;
 }

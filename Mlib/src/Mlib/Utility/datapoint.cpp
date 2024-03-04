@@ -7,6 +7,9 @@ namespace Mlib
 		data(inData), target(inTarget), id(inId)
 	{
 	}
+	Datapoint::Datapoint()
+	{
+	}
 
 	Dataset::Dataset(std::function<Datapoint(std::string)> func, std::string path, int num, bool labels)
 	{
@@ -27,6 +30,9 @@ namespace Mlib
 
 		file.close();
 	}
+	Dataset::Dataset()
+	{
+	}
 
 	Batch::Batch(Dataset& dataset, int n)
 	{
@@ -38,9 +44,12 @@ namespace Mlib
 
 		for (int i = 0; i < n; i++)
 		{
-			int num = Mlib::random(0, index.size() - 1);
+			int num = Mlib::random(0, static_cast<int>(index.size() - 1));
 			data.push_back(std::ref(dataset.data[num]));
 			index.erase(index.begin() + num);
 		}
+	}
+	Batch::Batch()
+	{
 	}
 }

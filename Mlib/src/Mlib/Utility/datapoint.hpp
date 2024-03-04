@@ -11,7 +11,7 @@ namespace Mlib {
 		//setup the datapoint with the given data, target and id values
 		Datapoint(std::vector<float> inData, std::vector<float> inTarget, int inId);
 		//create an empty datapoint
-		Datapoint() {}
+		Datapoint();
 
 		std::vector<float> data;
 		std::vector<float> target;
@@ -24,7 +24,7 @@ namespace Mlib {
 		each line of the file will be converted to a datapoint using the 'func' parameter*/
 		Dataset(std::function<Datapoint(std::string)> func, std::string path, int num, bool labels = false);
 		//create an empty dataset
-		Dataset() {}
+		Dataset();
 
 		//a vector of the datapoints that form the dataset
 		std::vector<Datapoint> data;
@@ -35,7 +35,7 @@ namespace Mlib {
 		//create a batch taking 'n' random datapoints from the given dataset
 		Batch(Dataset& dataset, int n);
 		//create an empty batch
-		Batch() {}
+		Batch();
 
 		//a vector of references to datapoints
 		std::vector<std::reference_wrapper<Datapoint>> data;
