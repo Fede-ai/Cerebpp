@@ -5,9 +5,6 @@
 #include <wtypes.h>
 
 namespace Mlib {
-	//get the current system time
-	Time getTime();
-
 	//sleep for a given amount of time
 	void sleep(Time time);
 
