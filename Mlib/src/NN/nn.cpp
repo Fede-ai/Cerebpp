@@ -2,7 +2,7 @@
 #include <Windows.h>
 
 namespace Mlib {
-	Ai::Ai(std::vector<int> inSizes, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc, bool rand)
+	NN::NN(std::vector<int> inSizes, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc, bool rand)
 		:
 		hidAct(inHidAct),
 		outAct(inOutAct),
@@ -12,7 +12,7 @@ namespace Mlib {
 		for (int layer = 1; layer < sizes.size(); layer++)
 			layers.push_back(Layer(sizes[layer - 1], sizes[layer], rand, inHidAct, inOutAct, inLossFunc));
 	}
-	Ai::Ai(std::string path)
+	NN::NN(std::string path)
 	{
 		std::fstream file;
 		std::string line, token;
@@ -44,7 +44,7 @@ namespace Mlib {
 		file.close();
 	}
 
-	std::vector<float> Ai::computePrediction(Datapoint datapoint)
+	std::vector<float> NN::computePrediction(Datapoint datapoint)
 	{
 		std::vector<float> values = layers[0].computeHidden(datapoint.data);
 		for (int layer = 1; layer < layers.size() - 1; layer++)
@@ -53,7 +53,7 @@ namespace Mlib {
 
 		return values;
 	}
-	void Ai::backProp(Datapoint datapoint)
+	void NN::backProp(Datapoint datapoint)
 	{
 		computePrediction(datapoint);
 		std::vector<float> nodeValues = layers[layers.size() - 1].computeOutputNodeValues(datapoint.target);
@@ -65,7 +65,7 @@ namespace Mlib {
 			layers[layer].updateGradients(nodeValues);
 		}
 	}
-	float Ai::loss(Batch batch)
+	float NN::loss(Batch batch)
 	{
 		float loss = 0;
 		for (const auto& d : batch.data)
@@ -73,7 +73,7 @@ namespace Mlib {
 		return (loss / batch.data.size());
 	}
 
-	void Ai::train(Batch batch, float learnRate, float momentum)
+	void NN::train(Batch batch, float learnRate, float momentum)
 	{
 		for (auto& d : batch.data)
 			backProp(d.get());
@@ -84,7 +84,7 @@ namespace Mlib {
 		for (auto& layer : layers)
 			layer.clearGradients();
 	}
-	void Ai::save(std::string path) const
+	void NN::save(std::string path) const
 	{
 		std::fstream file;
 		file.open(path + ".txt", std::ios::out | std::ios::trunc);

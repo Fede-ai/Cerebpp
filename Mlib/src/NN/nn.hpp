@@ -6,7 +6,7 @@
 
 namespace Mlib 
 {
-	class Ai {
+	class NN {
 	public:	
 		//activation functions for hidden and output layers
 		enum ActFunc {
@@ -24,9 +24,9 @@ namespace Mlib
 
 		/*creare a new ai with the given size and function. the 'rand' parameter determinates whether the
 		weights and biases should be initialized as 0 or as a random number between -1 and 1*/
-		Ai(std::vector<int> inSizes, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc, bool rand = false);
+		NN(std::vector<int> inSizes, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc, bool rand = false);
 		//load the ai parameters from a .txt file (do not include the file extension in the path parameter)
-		Ai(std::string path);
+		NN(std::string path);
 
 		//compute the predicted target values for a given datapoint
 		std::vector<float> computePrediction(Datapoint datapoint);

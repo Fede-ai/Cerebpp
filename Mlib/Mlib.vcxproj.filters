@@ -4,75 +4,75 @@
     <None Include="errors.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="Ai">
-      <UniqueIdentifier>{beb8a087-57e9-4b8d-bff1-93a863c48557}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Utility">
       <UniqueIdentifier>{b1710f60-e89a-4e5c-a3b7-ce030735a09b}</UniqueIdentifier>
     </Filter>
     <Filter Include="System">
       <UniqueIdentifier>{9b077103-eb7e-4d2a-a44a-1e80915ff408}</UniqueIdentifier>
     </Filter>
+    <Filter Include="NN">
+      <UniqueIdentifier>{beb8a087-57e9-4b8d-bff1-93a863c48557}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Mlib\Ai\ai.cpp">
-      <Filter>Ai</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Mlib\Ai\layer.cpp">
-      <Filter>Ai</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Mlib\System\keyboard.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Mlib\System\mouse.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Mlib\Utility\datapoint.cpp">
+    <ClCompile Include="src\Utility\datapoint.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
-    <ClCompile Include="src\Mlib\Utility\time.cpp">
+    <ClCompile Include="src\Utility\math.cpp">
       <Filter>Utility</Filter>
     </ClCompile>
-    <ClCompile Include="src\Mlib\System\system.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Mlib\System\file.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Mlib\Utility\math.cpp">
+    <ClCompile Include="src\Utility\time.cpp">
       <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\System\file.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\System\keyboard.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\System\mouse.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\System\system.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NN\layer.cpp">
+      <Filter>NN</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NN\nn.cpp">
+      <Filter>NN</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Mlib\Ai\ai.hpp">
-      <Filter>Ai</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Mlib\Ai\layer.hpp">
-      <Filter>Ai</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Mlib\System\keyboard.hpp">
-      <Filter>System</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Mlib\System\mouse.hpp">
-      <Filter>System</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Mlib\Utility\datapoint.hpp">
+    <ClInclude Include="src\Utility\datapoint.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="src\Mlib\Utility\vec2.hpp">
+    <ClInclude Include="src\Utility\math.hpp">
       <Filter>Utility</Filter>
     </ClInclude>
-    <ClInclude Include="src\Mlib\System\system.hpp">
+    <ClInclude Include="src\Utility\time.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Utility\vec2.hpp">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\System\file.hpp">
       <Filter>System</Filter>
     </ClInclude>
-    <ClInclude Include="src\Mlib\Utility\math.hpp">
-      <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Mlib\Utility\time.hpp">
-      <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Mlib\System\file.hpp">
+    <ClInclude Include="src\System\keyboard.hpp">
       <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\System\mouse.hpp">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\System\system.hpp">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NN\layer.hpp">
+      <Filter>NN</Filter>
+    </ClInclude>
+    <ClInclude Include="src\NN\nn.hpp">
+      <Filter>NN</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

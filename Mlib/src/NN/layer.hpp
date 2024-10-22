@@ -1,9 +1,9 @@
 #pragma once
-#include "ai.hpp"
+#include "nn.hpp"
 
 namespace Mlib
 {
-	class Ai::Layer {
+	class NN::Layer {
 	public:
 		/*create a new layer from size, function.parameters are eigher set to 0 ('rand' = false)
 		or to a random number between -1 and 1 ('rand' = true)*/

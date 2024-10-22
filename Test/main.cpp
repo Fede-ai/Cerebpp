@@ -1,6 +1,6 @@
 #include <iostream>
-#include "Mlib/Utility/time.hpp"
-#include "Mlib/System/system.hpp"
+#include "Utility/time.hpp"
+#include "System/system.hpp"
 
 void take(Mlib::Clock& c) {
 	while (true) {

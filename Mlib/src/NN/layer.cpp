@@ -3,7 +3,7 @@
 #include <iostream>
 
 namespace Mlib {
-	Ai::Layer::Layer(int inNumBef, int inNumAft, bool rand, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc)
+	NN::Layer::Layer(int inNumBef, int inNumAft, bool rand, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc)
 		:
 		numBef(inNumBef),
 		numAft(inNumAft),
@@ -39,7 +39,7 @@ namespace Mlib {
 		}
 		weightsVelocities = weightsGradients;
 	}
-	Ai::Layer::Layer(int inNumBef, int inNumAft, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc, std::string string)
+	NN::Layer::Layer(int inNumBef, int inNumAft, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc, std::string string)
 		:
 		numBef(inNumBef),
 		numAft(inNumAft),
@@ -76,7 +76,7 @@ namespace Mlib {
 		biasesVelocities = biasesGradients;
 	}
 
-	std::vector<float> Ai::Layer::computeHidden(std::vector<float> inputs)
+	std::vector<float> NN::Layer::computeHidden(std::vector<float> inputs)
 	{
 		if (inputs.size() != numBef) {
 			std::cout << "ERROR: layer size: " << numBef << ", layer input " << inputs.size();
@@ -97,7 +97,7 @@ namespace Mlib {
 		activatedValues = hiddenAct(weightedValues);
 		return activatedValues;
 	}
-	std::vector<float> Ai::Layer::computeHiddenNodeValues(std::vector<float> nodeValuesAfter, Layer layerAft) const
+	std::vector<float> NN::Layer::computeHiddenNodeValues(std::vector<float> nodeValuesAfter, Layer layerAft) const
 	{
 		std::vector<float> nodeValues;
 		std::vector<float> actDer = hiddenActDer(weightedValues);
@@ -115,7 +115,7 @@ namespace Mlib {
 
 		return nodeValues;
 	}
-	std::vector<float> Ai::Layer::computeOutput(std::vector<float> inputs)
+	std::vector<float> NN::Layer::computeOutput(std::vector<float> inputs)
 	{
 		if (inputs.size() != numBef) {
 			std::cout << "ERROR: layer size: " << numBef << ", layer input " << inputs.size();
@@ -136,7 +136,7 @@ namespace Mlib {
 		activatedValues = outputAct(weightedValues);
 		return activatedValues;
 	}
-	std::vector<float> Ai::Layer::computeOutputNodeValues(std::vector<float> targets) const
+	std::vector<float> NN::Layer::computeOutputNodeValues(std::vector<float> targets) const
 	{
 		std::vector<float> nodeValues;
 		std::vector<float> lossAndActDer = lossAndOutputActDer(activatedValues, targets);
@@ -147,7 +147,7 @@ namespace Mlib {
 		return nodeValues;
 	}
 
-	void Ai::Layer::updateGradients(std::vector<float> nodeValues)
+	void NN::Layer::updateGradients(std::vector<float> nodeValues)
 	{
 		for (int bef = 0; bef < numBef; bef++)
 		{
@@ -163,7 +163,7 @@ namespace Mlib {
 			biasesGradients[aft] += nodeValues[aft];
 		}
 	}
-	void Ai::Layer::applyGradients(float learnRate, float momentum, int batchSize)
+	void NN::Layer::applyGradients(float learnRate, float momentum, int batchSize)
 	{
 		for (int bef = 0; bef < numBef; bef++)
 		{
@@ -182,7 +182,7 @@ namespace Mlib {
 			biases[aft] -= biasesVelocities[aft] * learnRate;
 		}
 	}
-	void Ai::Layer::clearGradients() 
+	void NN::Layer::clearGradients() 
 	{
 		for (int bef = 0; bef < numBef; bef++)
 		{
@@ -198,7 +198,7 @@ namespace Mlib {
 		}
 	}
 
-	float Ai::Layer::loss(std::vector<float> values, std::vector<float> targets) const
+	float NN::Layer::loss(std::vector<float> values, std::vector<float> targets) const
 	{
 		float loss = 0.0;
 
@@ -217,7 +217,7 @@ namespace Mlib {
 		return loss;
 	}
 
-	std::string Ai::Layer::toString() const
+	std::string NN::Layer::toString() const
 	{
 		std::ostringstream ss;
 
@@ -233,7 +233,7 @@ namespace Mlib {
 		return ss.str();
 	}
 
-	std::vector<float> Ai::Layer::hiddenAct(std::vector<float> values) const
+	std::vector<float> NN::Layer::hiddenAct(std::vector<float> values) const
 	{
 		std::vector<float> activated;
 
@@ -254,7 +254,7 @@ namespace Mlib {
 
 		return activated;
 	}
-	std::vector<float> Ai::Layer::hiddenActDer(std::vector<float> values) const
+	std::vector<float> NN::Layer::hiddenActDer(std::vector<float> values) const
 	{
 		std::vector<float> derivatives;
 
@@ -283,7 +283,7 @@ namespace Mlib {
 
 		return derivatives;
 	}
-	std::vector<float> Ai::Layer::outputAct(std::vector<float> values) const
+	std::vector<float> NN::Layer::outputAct(std::vector<float> values) const
 	{
 		std::vector<float> activated;
 
@@ -311,7 +311,7 @@ namespace Mlib {
 
 		return activated;
 	}
-	std::vector<float> Ai::Layer::lossAndOutputActDer(std::vector<float> values, std::vector<float> targets) const
+	std::vector<float> NN::Layer::lossAndOutputActDer(std::vector<float> values, std::vector<float> targets) const
 	{
 		std::vector<float> nodesLossesDer;
 
