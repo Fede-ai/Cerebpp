@@ -1,4 +1,4 @@
-#include "layer.hpp"
+#include "nn.hpp"
 #include "../Utility/math.hpp"
 #include <iostream>
 
@@ -79,7 +79,7 @@ namespace Mlib {
 	std::vector<float> NN::Layer::computeHidden(std::vector<float> inputs)
 	{
 		if (inputs.size() != numBef) {
-			std::cout << "ERROR: layer size: " << numBef << ", layer input " << inputs.size();
+			std::cout << "ERROR: layer input size: " << numBef << ", data size: " << inputs.size();
 			std::exit(-103);
 		}
 
@@ -118,7 +118,7 @@ namespace Mlib {
 	std::vector<float> NN::Layer::computeOutput(std::vector<float> inputs)
 	{
 		if (inputs.size() != numBef) {
-			std::cout << "ERROR: layer size: " << numBef << ", layer input " << inputs.size();
+			std::cout << "ERROR: layer input size: " << numBef << ", data size: " << inputs.size();
 			std::exit(-103);
 		}
 
@@ -200,6 +200,11 @@ namespace Mlib {
 
 	float NN::Layer::loss(std::vector<float> values, std::vector<float> targets) const
 	{
+		if (values.size() != targets.size()) {
+			std::cout << "ERROR: layer output size: " << values.size() << ", targets size: " << targets.size();
+			std::exit(-103);
+		}
+
 		float loss = 0.0;
 
 		if (lossFunc == LossFunc::SquaredError)

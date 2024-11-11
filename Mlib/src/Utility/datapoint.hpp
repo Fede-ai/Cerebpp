@@ -22,9 +22,11 @@ namespace Mlib {
 	{
 		/*load a dataset from a file(.txt or .csv files should be used).
 		each line of the file will be converted to a datapoint using the 'func' parameter*/
-		Dataset(std::function<Datapoint(std::string)> func, std::string path, int num, bool labels = false);
+		Dataset(std::function<Datapoint(std::string)> func, std::string path, bool labels = true);
 		//create an empty dataset
 		Dataset();
+
+		void loadFromFile(std::function<Datapoint(std::string)> func, std::string path, bool labels = true);
 
 		//a vector of the datapoints that form the dataset
 		std::vector<Datapoint> data;

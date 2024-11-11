@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <None Include="errors.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <Filter Include="Utility">
       <UniqueIdentifier>{b1710f60-e89a-4e5c-a3b7-ce030735a09b}</UniqueIdentifier>
     </Filter>
@@ -67,9 +64,6 @@
     </ClInclude>
     <ClInclude Include="src\System\system.hpp">
       <Filter>System</Filter>
-    </ClInclude>
-    <ClInclude Include="src\NN\layer.hpp">
-      <Filter>NN</Filter>
     </ClInclude>
     <ClInclude Include="src\NN\nn.hpp">
       <Filter>NN</Filter>

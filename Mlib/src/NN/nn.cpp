@@ -1,4 +1,4 @@
-#include "layer.hpp"
+#include "nn.hpp"
 #include <Windows.h>
 
 namespace Mlib {

@@ -1,4 +1,5 @@
 #include "datapoint.hpp"
+#include <iostream>
 
 namespace Mlib
 {
@@ -11,7 +12,7 @@ namespace Mlib
 	{
 	}
 
-	Dataset::Dataset(std::function<Datapoint(std::string)> func, std::string path, int num, bool labels)
+	Dataset::Dataset(std::function<Datapoint(std::string)> func, std::string path, bool labels)
 	{
 		//skip n lines
 		/*for (int i = 0; i < 0; ++i) {
@@ -21,11 +22,14 @@ namespace Mlib
 		std::ifstream file(path);
 		if (labels)
 			file.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //skip labels row
-		for (int n = 0; n < num; n++)
-		{
+
+		while (true) {
 			std::string line;
 			getline(file, line);
 			data.push_back(func(line));
+
+			if (file.eof())
+				break;
 		}
 
 		file.close();
@@ -34,10 +38,17 @@ namespace Mlib
 	{
 	}
 
+	void Dataset::loadFromFile(std::function<Datapoint(std::string)> func, std::string path, bool labels)
+	{
+		*this = Dataset(func, path, labels);
+	}
+
 	Batch::Batch(Dataset& dataset, int n)
 	{
-		if (dataset.data.size() < n)
+		if (dataset.data.size() < n) {
+			std::cout << "ERROR: dataset size: " << dataset.data.size() << ", batch size: " << n;
 			std::exit(-104);
+		}
 		std::vector<int> index;
 		for (int i = 0; i < dataset.data.size(); i++)
 			index.push_back(i);

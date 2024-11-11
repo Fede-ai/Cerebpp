@@ -11,9 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <None Include="errors.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="src\NN\layer.cpp" />
     <ClCompile Include="src\NN\nn.cpp" />
     <ClCompile Include="src\System\file.cpp" />
@@ -25,7 +22,6 @@
     <ClCompile Include="src\Utility\time.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\NN\layer.hpp" />
     <ClInclude Include="src\NN\nn.hpp" />
     <ClInclude Include="src\System\file.hpp" />
     <ClInclude Include="src\System\keyboard.hpp" />
