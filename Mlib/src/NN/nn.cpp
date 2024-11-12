@@ -100,12 +100,8 @@ namespace Mlib {
 		file << static_cast<int>(hidAct) << ',' << static_cast<int>(outAct) << ',' << static_cast<int>(lossFunc) << ",\n";
 
 		//write biases and weights
-		for (auto layer : layers)
-		{
-			file << layer.toString();
-
-			file << '\n';
-		}
+		for (const auto& layer : layers)
+			file << layer.toString() << '\n';
 
 		file.close();
 	}

@@ -1,5 +1,6 @@
 #include "datapoint.hpp"
 #include <iostream>
+#include <algorithm>
 
 namespace Mlib
 {
@@ -49,16 +50,11 @@ namespace Mlib
 			std::cout << "ERROR: dataset size: " << dataset.data.size() << ", batch size: " << n;
 			std::exit(-104);
 		}
-		std::vector<int> index;
-		for (int i = 0; i < dataset.data.size(); i++)
-			index.push_back(i);
 
-		for (int i = 0; i < n; i++)
-		{
-			int num = Mlib::random(0, static_cast<int>(index.size() - 1));
-			data.push_back(std::ref(dataset.data[num]));
-			index.erase(index.begin() + num);
-		}
+		static std::random_device rd;
+		static std::mt19937 gen(rd());
+		std::sample(dataset.data.begin(), dataset.data.end(), 
+			std::back_inserter(data), n, gen);
 	}
 	Batch::Batch()
 	{

@@ -30,7 +30,7 @@ namespace Mlib
 
 		//compute the predicted target values for a given datapoint
 		std::vector<float> computePrediction(Datapoint datapoint);
-		//calculate the average loos across the given batch
+		//calculate the average loss across the given batch
 		float loss(Batch batch);
 		//train the ai on a given batch
 		void train(Batch batch, float learnRate, float momentum);
