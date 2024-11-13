@@ -46,10 +46,10 @@ namespace Mlib {
 
 	std::vector<float> NN::computePrediction(Datapoint datapoint)
 	{
-		std::vector<float> values = layers[0].computeHidden(datapoint.data);
+		std::vector<float> values = layers[0].forwardPass(datapoint.data);
 		for (int layer = 1; layer < layers.size() - 1; layer++)
-			values = layers[layer].computeHidden(values);
-		values = layers[layers.size() - 1].computeOutput(values);
+			values = layers[layer].forwardPass(values);
+		values = layers[layers.size() - 1].forwardPass(values, true);
 
 		return values;
 	}
@@ -68,18 +68,18 @@ namespace Mlib {
 	float NN::loss(Batch batch)
 	{
 		float loss = 0;
-		for (const auto& d : batch.data)
+		for (const auto& d : batch.datapoints)
 			loss += layers[0].loss(computePrediction(d), d.get().target);
-		return (loss / batch.data.size());
+		return (loss / batch.datapoints.size());
 	}
 
 	void NN::train(Batch batch, float learnRate, float momentum)
 	{
-		for (auto& d : batch.data)
+		for (auto& d : batch.datapoints)
 			backProp(d.get());
 
 		for (auto& layer : layers)
-			layer.applyGradients(learnRate, momentum, static_cast<int>(batch.data.size()));
+			layer.applyGradients(learnRate, momentum, static_cast<int>(batch.datapoints.size()));
 
 		for (auto& layer : layers)
 			layer.clearGradients();

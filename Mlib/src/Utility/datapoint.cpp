@@ -27,7 +27,7 @@ namespace Mlib
 		while (true) {
 			std::string line;
 			getline(file, line);
-			data.push_back(func(line));
+			datapoints.push_back(func(line));
 
 			if (file.eof())
 				break;
@@ -39,24 +39,36 @@ namespace Mlib
 	{
 	}
 
+	size_t Dataset::size() const
+	{
+		return datapoints.size();
+	}
+
 	void Dataset::loadFromFile(std::function<Datapoint(std::string)> func, std::string path, bool labels)
 	{
 		*this = Dataset(func, path, labels);
 	}
 
-	Batch::Batch(Dataset& dataset, int n)
+	Batch::Batch(const Dataset& dataset, int n)
 	{
-		if (dataset.data.size() < n) {
-			std::cout << "ERROR: dataset size: " << dataset.data.size() << ", batch size: " << n;
+		if (dataset.datapoints.size() < n) {
+			std::cout << "ERROR: dataset size: " << dataset.datapoints.size() << ", batch size: " << n;
 			std::exit(-104);
 		}
 
 		static std::random_device rd;
 		static std::mt19937 gen(rd());
-		std::sample(dataset.data.begin(), dataset.data.end(), 
-			std::back_inserter(data), n, gen);
+		std::sample(dataset.datapoints.begin(), dataset.datapoints.end(), 
+			std::back_inserter(datapoints), n, gen);
 	}
-	Batch::Batch()
+	Batch::Batch(const Dataset& dataset)
 	{
+		for (const auto& d : dataset.datapoints)
+			datapoints.push_back(d);
+	}
+
+	size_t Batch::size() const
+	{
+		return datapoints.size();
 	}
 }

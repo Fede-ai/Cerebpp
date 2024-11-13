@@ -12,6 +12,7 @@ namespace Mlib
 		enum ActFunc {
 			NoAct = -1,
 			Sigmoid = 0,
+			//cannot be output activation function
 			ReLU = 1,
 			Softmax = 2
 		};
@@ -50,10 +51,9 @@ namespace Mlib
 			Layer(int inNumBef, int inNumAft, bool rand, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc);
 			//load layer from size, functions and a string
 			Layer(int inNumBef, int inNumAft, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc, std::string string);
-			std::vector<float> computeHidden(std::vector<float> inputs);
+			std::vector<float> forwardPass(std::vector<float> inputs, bool output = false);
 			//used for backpropagation
 			std::vector<float> computeHiddenNodeValues(std::vector<float> nodeValuesAfter, Layer layerAft) const;
-			std::vector<float> computeOutput(std::vector<float> inputs);
 			//used for backpropagation
 			std::vector<float> computeOutputNodeValues(std::vector<float> targets) const;
 
@@ -75,7 +75,6 @@ namespace Mlib
 			std::vector<float> hiddenActDer(std::vector<float> values) const;
 			std::vector<float> outputAct(std::vector<float> values) const;
 
-			std::vector<float> lossAndOutputActDer(std::vector<float> values, std::vector<float> targets) const;
 			ActFunc hidAct = NoAct, outAct = NoAct;
 			LossFunc lossFunc = NoLoss;
 

@@ -26,20 +26,25 @@ namespace Mlib {
 		//create an empty dataset
 		Dataset();
 
+		size_t size() const;
 		void loadFromFile(std::function<Datapoint(std::string)> func, std::string path, bool labels = true);
 
 		//a vector of the datapoints that form the dataset
-		std::vector<Datapoint> data;
+		std::vector<Datapoint> datapoints;
 	};
 
 	struct Batch
 	{
 		//create a batch taking 'n' random datapoints from the given dataset
-		Batch(Dataset& dataset, int n);
+		Batch(const Dataset& dataset, int n);
+		//create a batch containing all the datapoints in the dataset
+		Batch(const Dataset& dataset);
 		//create an empty batch
-		Batch();
+		Batch() = default;
+
+		size_t size() const;
 
 		//a vector of references to datapoints
-		std::vector<std::reference_wrapper<Datapoint>> data;
+		std::vector<std::reference_wrapper<const Datapoint>> datapoints;
 	};
 }
