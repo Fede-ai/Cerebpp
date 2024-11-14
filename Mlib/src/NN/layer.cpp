@@ -84,7 +84,7 @@ namespace Mlib {
 		biasesVelocities = biasesGradients;
 	}
 
-	std::vector<float> NN::Layer::forwardPass(std::vector<float> inputs, bool output)
+	std::vector<float> NN::Layer::forwardPass(const std::vector<float>& inputs, bool output)
 	{
 		//sizes do not match
 		if (inputs.size() != numBef) {
@@ -113,7 +113,7 @@ namespace Mlib {
 
 		return activatedValues;
 	}
-	std::vector<float> NN::Layer::computeHiddenNodeValues(std::vector<float> nodeValuesAfter, Layer layerAft) const
+	std::vector<float> NN::Layer::computeHiddenNodeValues(const std::vector<float>& nodeValuesAft, const Layer& layerAft) const
 	{
 		std::vector<float> nodeValues;
 		std::vector<float> actDer = hiddenActDer(weightedValues);
@@ -125,14 +125,14 @@ namespace Mlib {
 			for (int aftAft = 0; aftAft < layerAft.numAft; aftAft++)
 			{
 				float inputDerivative = layerAft.weights[aft][aftAft];
-				nodeValue += inputDerivative * nodeValuesAfter[aftAft];
+				nodeValue += inputDerivative * nodeValuesAft[aftAft];
 			}
 			nodeValues.push_back(nodeValue * actDer[aft]);
 		}
 
 		return nodeValues;
 	}
-	std::vector<float> NN::Layer::computeOutputNodeValues(std::vector<float> targets) const
+	std::vector<float> NN::Layer::computeOutputNodeValues(const std::vector<float>& targets) const
 	{
 		std::vector<float> nodeValues;
 
@@ -169,7 +169,7 @@ namespace Mlib {
 		return nodeValues;
 	}
 
-	void NN::Layer::updateGradients(std::vector<float> nodeValues)
+	void NN::Layer::updateGradients(const std::vector<float>& nodeValues)
 	{
 		//update weights gradients
 		for (int bef = 0; bef < numBef; bef++)
@@ -225,7 +225,7 @@ namespace Mlib {
 			biasesGradients[aft] = 0;
 	}
 
-	float NN::Layer::loss(std::vector<float> values, std::vector<float> targets) const
+	float NN::Layer::loss(const std::vector<float>& values, const std::vector<float>& targets) const
 	{
 		//sizes do not match
 		if (values.size() != targets.size()) {
@@ -270,7 +270,7 @@ namespace Mlib {
 		return ss.str();
 	}
 
-	std::vector<float> NN::Layer::hiddenAct(std::vector<float> values) const
+	std::vector<float> NN::Layer::hiddenAct(const std::vector<float>& values) const
 	{
 		std::vector<float> activated;
 
@@ -290,7 +290,7 @@ namespace Mlib {
 
 		return activated;
 	}
-	std::vector<float> NN::Layer::hiddenActDer(std::vector<float> values) const
+	std::vector<float> NN::Layer::hiddenActDer(const std::vector<float>& values) const
 	{
 		std::vector<float> derivatives;
 
@@ -318,7 +318,7 @@ namespace Mlib {
 
 		return derivatives;
 	}
-	std::vector<float> NN::Layer::outputAct(std::vector<float> values) const
+	std::vector<float> NN::Layer::outputAct(const std::vector<float>& values) const
 	{
 		std::vector<float> activated;
 

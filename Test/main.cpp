@@ -62,6 +62,7 @@ int main()
 		mean += d.target[0] * 2.5 - 0.5;
 	mean /= dataset.datapoints.size();
 
+	//compute r^2 values for the regressions
 	double m = 0.015036575, q = -5.060441735;
 	double sst = 0, linearSrr = 0, aiSrr = 0;
 	for (const auto& d : dataset.datapoints) {
@@ -82,35 +83,50 @@ int main()
 	std::cout << "R^2 ai model = " << 1 - aiSrr / sst << ", srr = " << aiSrr << "\n";
 
 	int sX = 315, eX = 435;
-	float sY = -0.6, eY = 2;
+	float sY = -0.6f, eY = 2;
 	int sizeX = 1200, sizeY = 780;
 
 	sf::Image img;
-	img.create(sizeX, sizeY, sf::Color(200, 200, 200));
+	img.create(sizeX, sizeY, sf::Color(220, 220, 220));
 
+	//draw horizontal grid
+	for (float y = sY + 0.2f; y < eY; y += 0.2f) {
+		float yPos = sizeY - (y - sY) / (eY - sY) * sizeY;
+		for (int x = 0; x < sizeX; x++)
+			img.setPixel(x, std::floor(yPos), sf::Color(120, 120, 120));
+	}
+
+	//draw vertical grid
+	for (int x = sX + 12; x < eX; x += 12) {
+		float xPos = float(x - sX) / (eX - sX) * sizeX;
+		for (int y = 0; y < sizeY; y++)
+			img.setPixel(std::floor(xPos), y, sf::Color(120, 120, 120));
+	}
+
+	//draw all datapoints
 	for (const auto& d : dataset.datapoints) {
 		float xVal = (d.data[0] + 3) * 100;
-		float yVal = d.target[0] * 2.5f - 0.5;
+		float yVal = d.target[0] * 2.5f - 0.5f;
 
 		float xPos = (xVal - sX) / (eX - sX) * sizeX;
 		float yPos = sizeY - (yVal - sY) / (eY - sY) * sizeY;
 
-		for (int a = 0; a < 3; a++)
-			for (int b = 0; b < 3; b++)
+		for (int a = -1; a < 3; a++)
+			for (int b = -1; b < 3; b++)
 				img.setPixel(std::floor(xPos) + a, std::floor(yPos) + b, sf::Color::Magenta);
 	}
 
+	//draw both regressions
 	for (int x = 0; x < sizeX; x++) {
 		float xVal = (x / float(sizeX)) * (eX - sX) + sX;
 
-		float yVal = xVal * m + q;
+		float yVal = float(xVal * m + q);
 		float yPos = sizeY - (yVal - sY) / (eY - sY) * sizeY;
 		img.setPixel(x, std::floor(yPos), sf::Color::Red);
 		img.setPixel(x, std::floor(yPos) + 1, sf::Color::Red);
 		img.setPixel(x, std::floor(yPos) + 2, sf::Color::Red);
 
-		Mlib::Datapoint dp({ xVal / 100 - 3 }, {}, 0);
-		yVal = ai.computePrediction(dp)[0] * 2.5f - 0.5;
+		yVal = ai.computePrediction({ xVal / 100 - 3 })[0] * 2.5f - 0.5f;
 		yPos = sizeY - (yVal - sY) / (eY - sY) * sizeY;
 		img.setPixel(x, std::floor(yPos), sf::Color::Blue);
 		img.setPixel(x, std::floor(yPos) + 1, sf::Color::Blue);

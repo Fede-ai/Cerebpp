@@ -29,12 +29,14 @@ namespace Mlib
 		//load the ai parameters from a .txt file (do not include the file extension in the path parameter)
 		NN(std::string path);
 
+		//compute the predicted target values for a given input data
+		std::vector<float> computePrediction(const std::vector<float>& data);
 		//compute the predicted target values for a given datapoint
-		std::vector<float> computePrediction(Datapoint datapoint);
+		std::vector<float> computePrediction(const Datapoint& datapoint);
 		//calculate the average loss across the given batch
-		float loss(Batch batch);
+		float loss(const Batch& batch);
 		//train the ai on a given batch
-		void train(Batch batch, float learnRate, float momentum);
+		void train(const Batch& batch, float learnRate, float momentum);
 		//save the ai parameters in a .txt file (do not include the file extension in the path parameter)
 		void save(std::string path) const;
 
@@ -42,7 +44,7 @@ namespace Mlib
 		std::vector<int> sizes;
 
 	private:	
-		void backProp(Datapoint datapoint);
+		void backProp(const Datapoint& datapoint);
 		
 		class Layer {
 		public:
@@ -51,29 +53,29 @@ namespace Mlib
 			Layer(int inNumBef, int inNumAft, bool rand, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc);
 			//load layer from size, functions and a string
 			Layer(int inNumBef, int inNumAft, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc, std::string string);
-			std::vector<float> forwardPass(std::vector<float> inputs, bool output = false);
+			std::vector<float> forwardPass(const std::vector<float>& inputs, bool output = false);
 			//used for backpropagation
-			std::vector<float> computeHiddenNodeValues(std::vector<float> nodeValuesAfter, Layer layerAft) const;
+			std::vector<float> computeHiddenNodeValues(const std::vector<float>& nodeValuesAft, const Layer& layerAft) const;
 			//used for backpropagation
-			std::vector<float> computeOutputNodeValues(std::vector<float> targets) const;
+			std::vector<float> computeOutputNodeValues(const std::vector<float>& targets) const;
 
 			//update the gradients 
-			void updateGradients(std::vector<float> nodeValues);
+			void updateGradients(const std::vector<float>& nodeValues);
 			//update all parameters applying the gradients
 			void applyGradients(float learnRate, float momentum, int batchSize);
 			//set all gradients to 0
 			void clearGradients();
 
 			//calculate the losses for each value-target pair
-			float loss(std::vector<float> values, std::vector<float> targets) const;
+			float loss(const std::vector<float>& values, const std::vector<float>& targets) const;
 
 			//save the layer to a string format
 			std::string toString() const;
 
 		private:
-			std::vector<float> hiddenAct(std::vector<float> values) const;
-			std::vector<float> hiddenActDer(std::vector<float> values) const;
-			std::vector<float> outputAct(std::vector<float> values) const;
+			std::vector<float> hiddenAct(const std::vector<float>& values) const;
+			std::vector<float> hiddenActDer(const std::vector<float>& values) const;
+			std::vector<float> outputAct(const std::vector<float>& values) const;
 
 			ActFunc hidAct = NoAct, outAct = NoAct;
 			LossFunc lossFunc = NoLoss;
