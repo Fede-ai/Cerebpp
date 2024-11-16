@@ -1,6 +1,7 @@
-#include "datapoint.hpp"
+#include "Crb/Utility/datapoint.hpp"
 #include <iostream>
 #include <algorithm>
+#include <random>
 
 namespace Mlib
 {
@@ -56,10 +57,10 @@ namespace Mlib
 			std::exit(-104);
 		}
 
-		static std::random_device rd;
-		static std::mt19937 gen(rd());
+		static std::random_device dev;
+		static std::mt19937 rng(dev());
 		std::sample(dataset.datapoints.begin(), dataset.datapoints.end(), 
-			std::back_inserter(datapoints), n, gen);
+			std::back_inserter(datapoints), n, rng);
 	}
 	Batch::Batch(const Dataset& dataset)
 	{

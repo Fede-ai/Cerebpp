@@ -1,7 +1,7 @@
 #include <iostream>
 #include <thread>
-#include "NN/nn.hpp"
-#include <SFML/Graphics.hpp>
+#include "Crb/NN/nn.hpp"
+//#include <SFML/Graphics.hpp>
 
 static Mlib::Datapoint readData(std::string str) {
 	Mlib::Datapoint dp;
@@ -26,6 +26,7 @@ static Mlib::Datapoint readData(std::string str) {
 
 int main()
 {
+	
 	Mlib::Dataset dataset;
 	dataset.loadFromFile(readData, "C:/Users/feder/Desktop/two-var/dataset.csv");
 
@@ -86,8 +87,8 @@ int main()
 	float sY = -0.6f, eY = 2;
 	int sizeX = 1200, sizeY = 780;
 
-	sf::Image img;
-	img.create(sizeX, sizeY, sf::Color(220, 220, 220));
+	/*sf::Image img;
+	img.create(sizeX, sizeY, sf::Color(250, 250, 250));
 
 	//draw horizontal grid
 	for (float y = sY + 0.2f; y < eY; y += 0.2f) {
@@ -133,7 +134,7 @@ int main()
 		img.setPixel(x, std::floor(yPos) + 2, sf::Color::Blue);
 	}
 
-	img.saveToFile("img.png");
+	img.saveToFile("img.png");*/
 
 	return 0;
 }

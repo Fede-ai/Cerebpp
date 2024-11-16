@@ -1,14 +1,13 @@
 #pragma once
-#include <chrono>
 
 namespace Mlib {
 	class Time {
 	public:		
 		//default constructor, time set to 0
-		Time();
+		Time() = default;
 
-		double asSec();
-		size_t asMil();
+		double asSec() const;
+		size_t asMil() const;
 
 		friend Time seconds(double seconds);
 		friend Time milliseconds(size_t milliseconds);
@@ -43,12 +42,15 @@ namespace Mlib {
 		void start();
 		void stop();
 		void setTo(const Time t);
-		Time getTime();
-		bool isRunning();
+		Time getTime() const;
+		bool isRunning() const;
 
 	private:
 		bool running = false;
 		Time elapsed;
 		Time started;
 	};
+
+	//sleep for a given amount of time
+	void sleep(Time time);
 }

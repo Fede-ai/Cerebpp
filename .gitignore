@@ -361,10 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/Artificial-intelligence/data
-/Artificial-intelligence/save.txt
-/Trainer/data
-/Trainer/save.txt
-/Trainer/images
-/Test/best.txt
-/Test/img.png
+
+/build

@@ -1,15 +1,12 @@
-#include "time.hpp"
+#include "Crb/Utility/time.hpp"
+#include <thread>
+#include <chrono>
  
 namespace Mlib {
-	Time::Time()
-		: 
-		value(0) 
-	{}
-
-	double Time::asSec() {
+	double Time::asSec() const {
 		return value / 1000.0;
 	}
-	size_t Time::asMil() {
+	size_t Time::asMil() const {
 		return value;
 	}
 
@@ -110,15 +107,19 @@ namespace Mlib {
 			started = currentTime();
 		elapsed = t;
 	}
-	Time Clock::getTime()
+	Time Clock::getTime() const
 	{
 		if (running)
 			return (elapsed + (currentTime() - started));
 		else
 			return elapsed;
 	}
-	bool Clock::isRunning()
+	bool Clock::isRunning() const
 	{
 		return running;
+	}
+
+	void sleep(Time time) {
+		std::this_thread::sleep_for(std::chrono::milliseconds(time.asMil()));
 	}
 }

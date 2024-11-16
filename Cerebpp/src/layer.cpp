@@ -1,6 +1,6 @@
-#include "nn.hpp"
-#include "../Utility/math.hpp"
+#include "Crb/NN/nn.hpp"
 #include <iostream>
+#include <random>
 
 namespace Mlib {
 	NN::Layer::Layer(int inNumBef, int inNumAft, bool rand, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc)
@@ -11,11 +11,15 @@ namespace Mlib {
 		outAct(inOutAct),
 		lossFunc(inLossFunc)
 	{
+		static std::random_device dev;
+		static std::mt19937 rng(dev());
+		std::uniform_int_distribution<std::mt19937::result_type> dist(0, 100'000);
+
 		//setup biases and gradients with random values or 0s
 		for (int bias = 0; bias < numAft; bias++)
 		{
 			if (rand)
-				biases.push_back(static_cast<float>(random(0, 100'000) / 100'000.f - 0.5));
+				biases.push_back(dist(rng) / 100'000.f - 0.5f);
 			else
 				biases.push_back(0);
 
@@ -31,7 +35,7 @@ namespace Mlib {
 			for (int aft = 0; aft < numAft; aft++)
 			{
 				if (rand)
-					partialWeights.push_back(static_cast<float>(random(0, 100'000) / 100'000.f - 0.5));
+					partialWeights.push_back(dist(rng) / 100'000.f - 0.5f);
 				else
 					partialWeights.push_back(0);
 
