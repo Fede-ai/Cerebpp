@@ -1,8 +1,7 @@
 #include "Crb/NN/nn.hpp"
-#include <iostream>
 #include <random>
 
-namespace Mlib {
+namespace Crb {
 	NN::Layer::Layer(int inNumBef, int inNumAft, bool rand, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc)
 		:
 		numBef(inNumBef),
@@ -91,10 +90,8 @@ namespace Mlib {
 	std::vector<float> NN::Layer::forwardPass(const std::vector<float>& inputs, bool output)
 	{
 		//sizes do not match
-		if (inputs.size() != numBef) {
-			std::cout << "ERROR: layer input size: " << numBef << ", data size: " << inputs.size();
-			std::exit(-103);
-		}
+		if (inputs.size() != numBef)
+			throw std::exception("data size != layer input size");
 
 		//store value for later
 		inputValues = inputs;
@@ -158,8 +155,8 @@ namespace Mlib {
 				nodeValues.push_back(sigm * (1 - sigm));
 			}
 		}
-		else 
-			std::exit(-101);
+		else
+			throw std::exception("no valid output activation function");
 
 		//calculate loss derivative according to the chosen function
 		if (lossFunc == LossFunc::SquaredError)
@@ -168,7 +165,7 @@ namespace Mlib {
 				nodeValues[i] *= 2 * (activatedValues[i] - targets[i]);
 		}
 		else 
-			std::exit(-101);
+			throw std::exception("no valid loss function");
 
 		return nodeValues;
 	}
@@ -232,10 +229,8 @@ namespace Mlib {
 	float NN::Layer::loss(const std::vector<float>& values, const std::vector<float>& targets) const
 	{
 		//sizes do not match
-		if (values.size() != targets.size()) {
-			std::cout << "ERROR: layer output size: " << values.size() << ", targets size: " << targets.size();
-			std::exit(-103);
-		}
+		if (values.size() != targets.size())
+			throw std::exception("targets size != layer output size");
 
 		float loss = 0.0;
 
@@ -251,7 +246,7 @@ namespace Mlib {
 				loss += -targets[i] * static_cast<float>(std::log(values[i] + 1e-15));
 		}
 		else 
-			std::exit(-102);
+			throw std::exception("no valid loss function");
 
 		return loss;
 	}
@@ -290,7 +285,7 @@ namespace Mlib {
 				activated.push_back(std::max(v, float(0)));
 		}
 		else
-			std::exit(-100);
+			throw std::exception("no valid hidden activation function");
 
 		return activated;
 	}
@@ -318,7 +313,7 @@ namespace Mlib {
 			}
 		}
 		else
-			std::exit(-101);
+			throw std::exception("no valid hidden activation function");
 
 		return derivatives;
 	}
@@ -344,7 +339,7 @@ namespace Mlib {
 				v /= expSum;
 		}
 		else
-			std::exit(-100);
+			throw std::exception("no valid output activation function");
 
 		return activated;
 	}

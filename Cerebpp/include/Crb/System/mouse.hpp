@@ -1,7 +1,7 @@
 #pragma once
 #include "../Utility/vec2.hpp"
 
-namespace Mlib
+namespace Crb
 {
 	namespace Mouse
 	{

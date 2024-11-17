@@ -4,7 +4,7 @@
 #include <sstream>
 #include "../Utility/datapoint.hpp"
 
-namespace Mlib 
+namespace Crb 
 {
 	class NN {
 	public:	

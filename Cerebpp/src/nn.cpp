@@ -1,7 +1,7 @@
 #include "Crb/NN/nn.hpp"
 #include <Windows.h>
 
-namespace Mlib {
+namespace Crb {
 	NN::NN(std::vector<int> inSizes, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc, bool rand)
 		:
 		hidAct(inHidAct),

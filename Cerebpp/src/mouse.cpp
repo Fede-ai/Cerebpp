@@ -1,7 +1,7 @@
 #include "Crb/System/mouse.hpp"
 #include <Windows.h>
 
-namespace Mlib
+namespace Crb
 {
 	namespace Mouse
 	{

@@ -1,6 +1,6 @@
 #include "Crb/System/file.hpp"
 
-namespace Mlib {
+namespace Crb {
 
 	std::string getOpenFilePath(const char types[]) {
 		OPENFILENAMEA file;

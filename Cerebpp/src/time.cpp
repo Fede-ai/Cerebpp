@@ -2,7 +2,7 @@
 #include <thread>
 #include <chrono>
  
-namespace Mlib {
+namespace Crb {
 	double Time::asSec() const {
 		return value / 1000.0;
 	}

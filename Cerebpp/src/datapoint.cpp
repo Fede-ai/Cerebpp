@@ -1,16 +1,13 @@
 #include "Crb/Utility/datapoint.hpp"
-#include <iostream>
 #include <algorithm>
 #include <random>
+#include <numeric>
 
-namespace Mlib
+namespace Crb
 {
-	Datapoint::Datapoint(std::vector<float> inData, std::vector<float> inTarget, int inId)
+	Datapoint::Datapoint(int inId, std::vector<float> inData, std::vector<float> inTarget)
 		:
 		data(inData), target(inTarget), id(inId)
-	{
-	}
-	Datapoint::Datapoint()
 	{
 	}
 
@@ -22,6 +19,9 @@ namespace Mlib
 		}*/
 
 		std::ifstream file(path);
+		if (!file.is_open())
+			throw std::exception("invalid file path");
+
 		if (labels)
 			file.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //skip labels row
 
@@ -36,8 +36,32 @@ namespace Mlib
 
 		file.close();
 	}
-	Dataset::Dataset()
+
+	void Dataset::loadFromFile(std::function<Datapoint(std::string)> func, std::string path, bool labels)
 	{
+		*this = Dataset(func, path, labels);
+	}
+	void Dataset::split(Dataset& other, float spitPercentage)
+	{
+		if (spitPercentage <= 0 || spitPercentage >= 1)
+			throw std::exception("invalid split percentage");
+
+		int n = static_cast<int>(std::floor(datapoints.size() * spitPercentage));
+
+		std::vector<int> indexes(datapoints.size());
+		std::iota(std::begin(indexes), std::end(indexes), 0);
+
+		std::vector<int> indexesToMove;
+		static std::random_device dev;
+		static std::mt19937 rng(dev());
+		std::sample(indexes.begin(), indexes.end(),
+			std::back_inserter(indexesToMove), n, rng);
+
+		for (int i = int(indexesToMove.size()) - 1; i >= 0; i--) {
+			int index = indexesToMove[i];
+			other.datapoints.push_back(datapoints[index]);
+			datapoints.erase(datapoints.begin() + index);
+		}
 	}
 
 	size_t Dataset::size() const
@@ -45,17 +69,10 @@ namespace Mlib
 		return datapoints.size();
 	}
 
-	void Dataset::loadFromFile(std::function<Datapoint(std::string)> func, std::string path, bool labels)
-	{
-		*this = Dataset(func, path, labels);
-	}
-
 	Batch::Batch(const Dataset& dataset, int n)
 	{
-		if (dataset.datapoints.size() < n) {
-			std::cout << "ERROR: dataset size: " << dataset.datapoints.size() << ", batch size: " << n;
-			std::exit(-104);
-		}
+		if (dataset.datapoints.size() < n)
+			throw std::exception("cannot create a batch larger than the dataset");
 
 		static std::random_device dev;
 		static std::mt19937 rng(dev());
@@ -66,6 +83,15 @@ namespace Mlib
 	{
 		for (const auto& d : dataset.datapoints)
 			datapoints.push_back(d);
+	}
+
+	void Batch::loadFromDataset(const Dataset& dataset, int n)
+	{
+		*this = Batch(dataset, n);
+	}
+	void Batch::loadFromDataset(const Dataset& dataset)
+	{
+		*this = Batch(dataset);
 	}
 
 	size_t Batch::size() const

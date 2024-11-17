@@ -1,7 +1,7 @@
 project(Test)
 
 set(SOURCE
-	src/main.cpp
+	main.cpp
 )
 
 add_executable(Test ${SOURCE})

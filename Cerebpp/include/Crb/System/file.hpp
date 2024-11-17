@@ -3,7 +3,7 @@
 #include <Windows.h>
 #include <vector>
 
-namespace Mlib {
+namespace Crb {
 	//open the file select dialog and select a file
 	//types = the valid file extentions. The following format MUST be used: 
 	//"All Files (*.*)\0*.*\0Text (*.txt)\0*.txt\0"

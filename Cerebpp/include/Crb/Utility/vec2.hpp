@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Mlib {
+namespace Crb {
 	//definitions of this class' functions must be inline 
 	//and in the header because of templates rules
 
