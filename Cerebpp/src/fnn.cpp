@@ -1,8 +1,9 @@
-#include "Crb/NN/nn.hpp"
-#include <Windows.h>
+#include "Crb/FNN/layer.hpp"
+#include <fstream>
+#include <sstream>
 
 namespace Crb {
-	NN::NN(std::vector<int> inSizes, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc, bool rand)
+	FNN::FNN(std::vector<int> inSizes, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc, bool rand)
 		:
 		hidAct(inHidAct),
 		outAct(inOutAct),
@@ -10,9 +11,9 @@ namespace Crb {
 		sizes(inSizes)
 	{
 		for (int layer = 1; layer < sizes.size(); layer++)
-			layers.push_back(Layer(sizes[layer - 1], sizes[layer], rand, inHidAct, inOutAct, inLossFunc));
+			layers.push_back(new Layer(sizes[layer - 1], sizes[layer], rand, inHidAct, inOutAct, inLossFunc));
 	}
-	NN::NN(std::string path)
+	FNN::FNN(std::string path)
 	{
 		std::fstream file;
 		std::string line, token;
@@ -38,62 +39,62 @@ namespace Crb {
 		for (int i = 1; i < sizes.size(); i++)
 		{
 			getline(file, line);
-			layers.push_back(Layer(sizes[i - 1], sizes[i], hidAct, outAct, lossFunc, line));
+			layers.push_back(new Layer(sizes[i - 1], sizes[i], hidAct, outAct, lossFunc, line));
 		}
 
 		file.close();
 	}
 
-	std::vector<float> NN::computePrediction(const std::vector<float>& data) 
+	std::vector<float> FNN::computePrediction(const std::vector<float>& data) 
 	{
 		//pass the input through the first layer
-		std::vector<float> values = layers[0].forwardPass(data);
+		std::vector<float> values = layers[0]->forwardPass(data);
 
 		//pass the values through the rest of the layers
 		for (int layer = 1; layer < layers.size() - 1; layer++)
-			values = layers[layer].forwardPass(values);
+			values = layers[layer]->forwardPass(values);
 
 		//pass the values through the output layer
-		values = layers[layers.size() - 1].forwardPass(values, true);
+		values = layers[layers.size() - 1]->forwardPass(values, true);
 
 		return values;
 	}
-	std::vector<float> NN::computePrediction(const Datapoint& datapoint)
+	std::vector<float> FNN::computePrediction(const Datapoint& datapoint)
 	{
 		return computePrediction(datapoint.data);
 	}
-	void NN::backProp(const Datapoint& datapoint)
+	void FNN::backProp(const Datapoint& datapoint)
 	{
 		computePrediction(datapoint);
-		std::vector<float> nodeValues = layers[layers.size() - 1].computeOutputNodeValues(datapoint.target);
-		layers[layers.size() - 1].updateGradients(nodeValues);
+		std::vector<float> nodeValues = layers[layers.size() - 1]->computeOutputNodeValues(datapoint.target);
+		layers[layers.size() - 1]->updateGradients(nodeValues);
 
 		for (int layer = static_cast<int>(layers.size()) - 2; layer >= 0; layer--)
 		{
-			nodeValues = layers[layer].computeHiddenNodeValues(nodeValues, layers[layer + 1]);
-			layers[layer].updateGradients(nodeValues);
+			nodeValues = layers[layer]->computeHiddenNodeValues(nodeValues, *layers[layer + 1]);
+			layers[layer]->updateGradients(nodeValues);
 		}
 	}
-	float NN::loss(const Batch& batch)
+	float FNN::loss(const Batch& batch)
 	{
 		float loss = 0;
 		for (const auto& d : batch.datapoints)
-			loss += layers[0].loss(computePrediction(d), d.get().target);
+			loss += layers[0]->loss(computePrediction(d), d.get().target);
 		return (loss / batch.datapoints.size());
 	}
 
-	void NN::train(const Batch& batch, float learnRate, float momentum)
+	void FNN::train(const Batch& batch, float learnRate, float momentum)
 	{
 		for (auto& d : batch.datapoints)
 			backProp(d.get());
 
 		for (auto& layer : layers)
-			layer.applyGradients(learnRate, momentum, static_cast<int>(batch.size()));
+			layer->applyGradients(learnRate, momentum, static_cast<int>(batch.size()));
 
 		for (auto& layer : layers)
-			layer.clearGradients();
+			layer->clearGradients();
 	}
-	void NN::save(std::string path) const
+	void FNN::save(std::string path) const
 	{
 		std::fstream file;
 		file.open(path + ".txt", std::ios::out | std::ios::trunc);
@@ -110,7 +111,7 @@ namespace Crb {
 
 		//write biases and weights
 		for (const auto& layer : layers)
-			file << layer.toString() << '\n';
+			file << layer->toString() << '\n';
 
 		file.close();
 	}

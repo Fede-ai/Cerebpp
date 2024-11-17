@@ -1,8 +1,9 @@
-#include "Crb/NN/nn.hpp"
+#include "Crb/FNN/layer.hpp"
 #include <random>
+#include <sstream>
 
 namespace Crb {
-	NN::Layer::Layer(int inNumBef, int inNumAft, bool rand, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc)
+	FNN::Layer::Layer(int inNumBef, int inNumAft, bool rand, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc)
 		:
 		numBef(inNumBef),
 		numAft(inNumAft),
@@ -46,7 +47,7 @@ namespace Crb {
 		}
 		weightsVelocities = weightsGradients;
 	}
-	NN::Layer::Layer(int inNumBef, int inNumAft, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc, std::string string)
+	FNN::Layer::Layer(int inNumBef, int inNumAft, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc, std::string string)
 		:
 		numBef(inNumBef),
 		numAft(inNumAft),
@@ -87,7 +88,7 @@ namespace Crb {
 		biasesVelocities = biasesGradients;
 	}
 
-	std::vector<float> NN::Layer::forwardPass(const std::vector<float>& inputs, bool output)
+	std::vector<float> FNN::Layer::forwardPass(const std::vector<float>& inputs, bool output)
 	{
 		//sizes do not match
 		if (inputs.size() != numBef)
@@ -114,7 +115,7 @@ namespace Crb {
 
 		return activatedValues;
 	}
-	std::vector<float> NN::Layer::computeHiddenNodeValues(const std::vector<float>& nodeValuesAft, const Layer& layerAft) const
+	std::vector<float> FNN::Layer::computeHiddenNodeValues(const std::vector<float>& nodeValuesAft, const Layer& layerAft) const
 	{
 		std::vector<float> nodeValues;
 		std::vector<float> actDer = hiddenActDer(weightedValues);
@@ -133,7 +134,7 @@ namespace Crb {
 
 		return nodeValues;
 	}
-	std::vector<float> NN::Layer::computeOutputNodeValues(const std::vector<float>& targets) const
+	std::vector<float> FNN::Layer::computeOutputNodeValues(const std::vector<float>& targets) const
 	{
 		std::vector<float> nodeValues;
 
@@ -170,7 +171,7 @@ namespace Crb {
 		return nodeValues;
 	}
 
-	void NN::Layer::updateGradients(const std::vector<float>& nodeValues)
+	void FNN::Layer::updateGradients(const std::vector<float>& nodeValues)
 	{
 		//update weights gradients
 		for (int bef = 0; bef < numBef; bef++)
@@ -186,7 +187,7 @@ namespace Crb {
 		for (int aft = 0; aft < numAft; aft++)
 			biasesGradients[aft] += nodeValues[aft];
 	}
-	void NN::Layer::applyGradients(float learnRate, float momentum, int batchSize)
+	void FNN::Layer::applyGradients(float learnRate, float momentum, int batchSize)
 	{
 		//apply all the weights gradients
 		for (int bef = 0; bef < numBef; bef++)
@@ -212,7 +213,7 @@ namespace Crb {
 			biases[aft] -= biasesVelocities[aft] * learnRate;
 		}
 	}
-	void NN::Layer::clearGradients() 
+	void FNN::Layer::clearGradients() 
 	{
 		//clear all weights gradients
 		for (int bef = 0; bef < numBef; bef++)
@@ -226,7 +227,7 @@ namespace Crb {
 			biasesGradients[aft] = 0;
 	}
 
-	float NN::Layer::loss(const std::vector<float>& values, const std::vector<float>& targets) const
+	float FNN::Layer::loss(const std::vector<float>& values, const std::vector<float>& targets) const
 	{
 		//sizes do not match
 		if (values.size() != targets.size())
@@ -251,7 +252,7 @@ namespace Crb {
 		return loss;
 	}
 
-	std::string NN::Layer::toString() const
+	std::string FNN::Layer::toString() const
 	{
 		std::ostringstream ss;
 
@@ -269,7 +270,7 @@ namespace Crb {
 		return ss.str();
 	}
 
-	std::vector<float> NN::Layer::hiddenAct(const std::vector<float>& values) const
+	std::vector<float> FNN::Layer::hiddenAct(const std::vector<float>& values) const
 	{
 		std::vector<float> activated;
 
@@ -289,7 +290,7 @@ namespace Crb {
 
 		return activated;
 	}
-	std::vector<float> NN::Layer::hiddenActDer(const std::vector<float>& values) const
+	std::vector<float> FNN::Layer::hiddenActDer(const std::vector<float>& values) const
 	{
 		std::vector<float> derivatives;
 
@@ -317,7 +318,7 @@ namespace Crb {
 
 		return derivatives;
 	}
-	std::vector<float> NN::Layer::outputAct(const std::vector<float>& values) const
+	std::vector<float> FNN::Layer::outputAct(const std::vector<float>& values) const
 	{
 		std::vector<float> activated;
 

@@ -8,10 +8,11 @@ set(UTILITY
     include/Crb/Utility/datapoint.hpp
 )
 
-set(NN
-    src/nn.cpp
+set(FNN
+    src/fnn.cpp
     src/layer.cpp
-    include/Crb/NN/nn.hpp
+    include/Crb/FNN/fnn.hpp
+    include/Crb/FNN/layer.hpp
 )
 
 set(SYSTEM
@@ -23,10 +24,10 @@ set(SYSTEM
     include/Crb/System/mouse.hpp
 )
 
-add_library(Cerebpp STATIC ${UTILITY} ${NN} ${SYSTEM})
+add_library(Cerebpp STATIC ${UTILITY} ${FNN} ${SYSTEM})
 
 target_include_directories(Cerebpp PUBLIC include)
 
 source_group("Utility" FILES ${UTILITY})
-source_group("NN" FILES ${NN})
+source_group("FNN" FILES ${FNN})
 source_group("System" FILES ${SYSTEM})

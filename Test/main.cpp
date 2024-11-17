@@ -1,6 +1,6 @@
 #include <iostream>
 #include <thread>
-#include "Crb/NN/nn.hpp"
+#include "Crb/FNN/fnn.hpp"
 
 static Crb::Datapoint readData(std::string str) {
 	Crb::Datapoint dp;
@@ -25,10 +25,10 @@ static Crb::Datapoint readData(std::string str) {
 
 int main()
 {
-	Crb::Dataset dataset, second;
+	Crb::Dataset dataset;
 	dataset.loadFromFile(readData, "C:/Users/feder/Desktop/two-var/dataset.csv");
 
-	Crb::NN ai({ 1, 60, 60, 1 }, Crb::NN::ReLU, Crb::NN::Sigmoid, Crb::NN::SquaredError, true);
+	Crb::FNN ai({ 1, 60, 60, 1 }, Crb::FNN::ReLU, Crb::FNN::Sigmoid, Crb::FNN::SquaredError, true);
 
 	bool stop = false;
 	std::thread thrd([&stop]() {
