@@ -1,10 +1,10 @@
 #include "Crb/System/file.hpp"
-#include <Windows.h>
+//#include <Windows.h>
 
 namespace Crb {
 
 	std::string getOpenFilePath(const char types[]) {
-		OPENFILENAMEA file;
+		/*OPENFILENAMEA file;
 		CHAR path[100];
 	
 		ZeroMemory(&file, sizeof(file));
@@ -21,11 +21,12 @@ namespace Crb {
 		file.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
 	
 		GetOpenFileNameA(&file);
-		return path;
+		return path;*/
+		return "";
 	}
 	
 	std::string getSaveFilePath(const char types[]) {
-		OPENFILENAMEA file;
+		/*OPENFILENAMEA file;
 		CHAR path[100];
 	
 		ZeroMemory(&file, sizeof(file));
@@ -39,6 +40,7 @@ namespace Crb {
 		file.lpstrDefExt = (LPCSTR)"txt";
 	
 		GetSaveFileNameA(&file);
-		return path;
+		return path;*/
+		return "";
 	}
 }

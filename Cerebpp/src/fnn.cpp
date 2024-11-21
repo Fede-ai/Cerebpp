@@ -91,7 +91,7 @@ namespace Crb {
 		std::string line, token;
 		file.open(path, std::ios::in);
 		if (!file.is_open())
-			throw std::exception("couldn't open the file to load the fnn");
+			throw std::runtime_error("couldn't open the file to load the fnn");
 
 		//extract and load layers sizes
 		getline(file, line);
@@ -121,7 +121,7 @@ namespace Crb {
 		file.open(path, std::ios::out | std::ios::trunc);
 
 		if (!file.is_open())
-			throw std::exception("couldn't open the file to save the fnn");
+			throw std::runtime_error("couldn't open the file to save the fnn");
 
 		//write size
 		for (auto size : sizes)

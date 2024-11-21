@@ -1,5 +1,5 @@
 #include "Crb/System/keyboard.hpp"
-#include <Windows.h>
+//#include <Windows.h>
 
 namespace Crb
 {	
@@ -7,7 +7,7 @@ namespace Crb
 	{	
 		void setState(Key key, bool down)
 		{
-			INPUT input;
+			/*INPUT input;
 			input.type = INPUT_KEYBOARD;
 			input.ki.wVk = key;
 			if (down)
@@ -15,7 +15,7 @@ namespace Crb
 			else
 				input.ki.dwFlags = KEYEVENTF_KEYUP;
 
-			SendInput(1, &input, sizeof(INPUT));
+			SendInput(1, &input, sizeof(INPUT));*/
 		}
 		void simulateStroke(Key key)
 		{
@@ -24,23 +24,25 @@ namespace Crb
 		}
 		void writeWord(std::string word)
 		{
-			for (auto c : word)
-			{
-				simulateStroke(Key(VkKeyScan(c)));
+			for (auto c : word) {
+				//simulateStroke(Key(VkKeyScan(c)));
 			}
 		}
 
 		bool isKeyPressed(Key key)
 		{
-			return GetKeyState(key) < 0;
+			//return GetKeyState(key) < 0;
+			return 0;
 		}
 		bool isKeyToggled(Key key)
 		{
-			return GetKeyState(key) & 0x01;
+			//return GetKeyState(key) & 0x01;
+			return 0;
 		}
 		bool getAsyncState(Key key)
 		{
-			return GetAsyncKeyState(key) & 0x01;
+			//return GetAsyncKeyState(key) & 0x01;
+			return 0;
 		}
 	}
 }

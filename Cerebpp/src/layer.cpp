@@ -86,7 +86,7 @@ namespace Crb {
 	{
 		//sizes do not match
 		if (inputs.size() != numBefore)
-			throw std::exception("data size != layer input size");
+			throw std::runtime_error("data size != layer input size");
 
 		//store value for later
 		inputValues = inputs;
@@ -130,7 +130,7 @@ namespace Crb {
 			}
 		}
 		else
-			throw std::exception("no valid hidden activation function");
+			throw std::runtime_error("no valid hidden activation function");
 
 		//no idead wtf is going on here
 		for (int aft = 0; aft < numAfter; aft++) {
@@ -165,7 +165,7 @@ namespace Crb {
 			}
 		}
 		else
-			throw std::exception("no valid output activation function");
+			throw std::runtime_error("no valid output activation function");
 
 		//calculate loss derivative according to the chosen function
 		if (lossFunc == LossFunc::SquaredError)
@@ -174,7 +174,7 @@ namespace Crb {
 				nodeValues[i] *= 2 * (activatedValues[i] - targets[i]);
 		}
 		else 
-			throw std::exception("no valid loss function");
+			throw std::runtime_error("no valid loss function");
 
 		return nodeValues;
 	}
@@ -231,7 +231,7 @@ namespace Crb {
 	{
 		//sizes do not match
 		if (values.size() != targets.size())
-			throw std::exception("targets size != layer output size");
+			throw std::runtime_error("targets size != layer output size");
 
 		float loss = 0.0;
 
@@ -245,7 +245,7 @@ namespace Crb {
 				loss += -targets[i] * static_cast<float>(std::log(values[i] + 1e-15));
 		}
 		else 
-			throw std::exception("no valid loss function");
+			throw std::runtime_error("no valid loss function");
 
 		return loss;
 	}
@@ -281,7 +281,7 @@ namespace Crb {
 				activated.push_back(std::max(v, float(0)));
 		}
 		else
-			throw std::exception("no valid hidden activation function");
+			throw std::runtime_error("no valid hidden activation function");
 
 		return activated;
 	}
@@ -305,7 +305,7 @@ namespace Crb {
 				v /= expSum;
 		}
 		else
-			throw std::exception("no valid output activation function");
+			throw std::runtime_error("no valid output activation function");
 
 		return activated;
 	}

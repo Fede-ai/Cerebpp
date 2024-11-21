@@ -20,7 +20,7 @@ namespace Crb
 
 		std::ifstream file(path);
 		if (!file.is_open())
-			throw std::exception("invalid file path");
+			throw std::runtime_error("invalid dataset file path");
 
 		if (labels)
 			file.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); //skip labels row
@@ -44,7 +44,7 @@ namespace Crb
 	void Dataset::split(Dataset& other, float spitPercentage)
 	{
 		if (spitPercentage <= 0 || spitPercentage >= 1)
-			throw std::exception("invalid split percentage");
+			throw std::runtime_error("invalid split percentage");
 
 		int n = static_cast<int>(std::floor(datapoints.size() * spitPercentage));
 
@@ -72,7 +72,7 @@ namespace Crb
 	Batch::Batch(const Dataset& dataset, int n)
 	{
 		if (dataset.datapoints.size() < n)
-			throw std::exception("cannot create a batch larger than the dataset");
+			throw std::runtime_error("cannot create a batch larger than the dataset");
 
 		static std::random_device dev;
 		static std::mt19937 rng(dev());

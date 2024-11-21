@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <thread>
+#include <cmath>
 
 static Crb::Datapoint readData(std::string str) {
 	Crb::Datapoint dp;

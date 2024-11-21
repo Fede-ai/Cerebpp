@@ -1,5 +1,5 @@
 #include "Crb/System/mouse.hpp"
-#include <Windows.h>
+//#include <Windows.h>
 
 namespace Crb
 {
@@ -7,7 +7,7 @@ namespace Crb
 	{
 		void setState(Button but, bool down)
 		{
-			INPUT in;
+			/*INPUT in;
 			in.type = INPUT_MOUSE;
 			in.mi.time = 0;
 			in.mi.mouseData = 0;
@@ -46,7 +46,7 @@ namespace Crb
 					in.mi.mouseData = XBUTTON2;
 			}
 
-			SendInput(1, &in, sizeof(INPUT));
+			SendInput(1, &in, sizeof(INPUT));*/
 		}
 		void setPos(Vec2i pos, bool relative)
 		{
@@ -54,7 +54,7 @@ namespace Crb
 			if (relative)
 				targ = getPos() + pos;
 
-			SetCursorPos(targ.x, targ.y);
+			//SetCursorPos(targ.x, targ.y);
 		}	
 		void simulateClick(Button but)
 		{
@@ -63,7 +63,7 @@ namespace Crb
 		}
 		void simulateScroll(int scrollValue)
 		{
-			INPUT input;
+			/*INPUT input;
 			input.type = INPUT_MOUSE;
 			input.mi.dx = 0;
 			input.mi.dy = 0;
@@ -72,22 +72,25 @@ namespace Crb
 			input.mi.time = 0;
 			input.mi.dwExtraInfo = 0;
 
-			SendInput(1, &input, sizeof(INPUT));
+			SendInput(1, &input, sizeof(INPUT));*/
 		}
 
 		Vec2i getPos()
 		{
-			POINT pos;
-			GetCursorPos(&pos);
-			return Vec2i(pos.x, pos.y);
+			//POINT pos;
+			//GetCursorPos(&pos);
+			//return Vec2i(pos.x, pos.y);
+			return Vec2i(0, 0);
 		}
 		bool isButPressed(Button but)
 		{
-			return GetKeyState(but) < 0;
+			//return GetKeyState(but) < 0;
+			return 0;
 		}
 		bool isButToggled(Button but)
 		{
-			return GetKeyState(but) & 0x01;
+			//return GetKeyState(but) & 0x01;
+			return 0;
 		}
 	}
 }

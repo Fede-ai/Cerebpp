@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <functional>
+#include <vector>
 
 namespace Crb {
 	struct Datapoint
@@ -12,7 +13,7 @@ namespace Crb {
 
 		std::vector<float> data;
 		std::vector<float> target;
-		int id = NULL;
+		int id = -1;
 	};
 
 	struct Dataset
