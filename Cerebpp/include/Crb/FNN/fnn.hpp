@@ -4,7 +4,7 @@
 namespace Crb 
 {
 	class FNN {
-	public:	
+	public:
 		//activation functions for hidden and output layers
 		enum ActFunc {
 			NoAct = -1,
@@ -20,31 +20,36 @@ namespace Crb
 			CrossEntropy = 1
 		};
 
-		/*creare a new ai with the given size and function. the 'rand' parameter determinates whether the
-		weights and biases should be initialized as 0 or as a random number between -1 and 1*/
+		//create empty fnn
+		FNN() = default;
+		FNN& operator=(FNN other);
+
+		//creare a new fnn with the given size and function. the 'rand' parameter determinates whether the
+		//weights and biases should be initialized as 0 or as a random number between -1 and 1
 		FNN(std::vector<int> inSizes, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc, bool rand = false);
-		//load the ai parameters from a .txt file (do not include the file extension in the path parameter)
+		//load the fnn parameters from a file (usually a .txt)
 		FNN(std::string path);
+		~FNN();
 
 		//compute the predicted target values for a given input data
-		std::vector<float> computePrediction(const std::vector<float>& data);
+		std::vector<float> feedforward(const std::vector<float>& data);
 		//compute the predicted target values for a given datapoint
-		std::vector<float> computePrediction(const Datapoint& datapoint);
+		std::vector<float> feedforward(const Datapoint& datapoint);
 		//calculate the average loss across the given batch
 		float loss(const Batch& batch);
-		//train the ai on a given batch
-		void train(const Batch& batch, float learnRate, float momentum);
-		//save the ai parameters in a .txt file (do not include the file extension in the path parameter)
-		void save(std::string path) const;
+		//train the fnn on a given batch
+		void backPropagation(const Batch& batch, float learnRate, float momentum);
 
-		//a vector containing the number of nodes in each layer
-		std::vector<int> sizes;
+		void loadFromFile(std::string path);
+		//save the fnn parameters to a file (.txt is recommended)
+		void save(std::string path) const;
 
 	private:	
 		void backProp(const Datapoint& datapoint);
-		
+
 		class Layer;
 		std::vector<Layer*> layers;
+		std::vector<int> sizes;
 
 		ActFunc hidAct = NoAct, outAct = NoAct;
 		LossFunc lossFunc = NoLoss;

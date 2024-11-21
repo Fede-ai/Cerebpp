@@ -1,7 +1,5 @@
 #pragma once 
 #include <string>
-#include <Windows.h>
-#include <vector>
 
 namespace Crb {
 	//open the file select dialog and select a file

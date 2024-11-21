@@ -1,8 +1,6 @@
 #pragma once
-#include <vector>
-#include <fstream>
-#include <functional>
 #include <string>
+#include <functional>
 
 namespace Crb {
 	struct Datapoint

@@ -1,5 +1,5 @@
 #pragma once
-#include "../Utility/vec2.hpp"
+#include "Crb/Utility/vec2.hpp"
 
 namespace Crb
 {

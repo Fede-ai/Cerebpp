@@ -1,6 +1,7 @@
-#include <iostream>
-#include <thread>
 #include "Crb/FNN/fnn.hpp"
+#include <iostream>
+#include <string>
+#include <thread>
 
 static Crb::Datapoint readData(std::string str) {
 	Crb::Datapoint dp;
@@ -28,7 +29,13 @@ int main()
 	Crb::Dataset dataset;
 	dataset.loadFromFile(readData, "C:/Users/feder/Desktop/two-var/dataset.csv");
 
-	Crb::FNN ai({ 1, 60, 60, 1 }, Crb::FNN::ReLU, Crb::FNN::Sigmoid, Crb::FNN::SquaredError, true);
+	Crb::FNN ai;
+	try {
+		ai.loadFromFile("ok.txt");
+	}
+	catch (std::exception e) {
+		ai = Crb::FNN({ 1, 60, 60, 1 }, Crb::FNN::ReLU, Crb::FNN::Sigmoid, Crb::FNN::SquaredError, true);
+	}
 
 	bool stop = false;
 	std::thread thrd([&stop]() {
@@ -40,7 +47,7 @@ int main()
 	Crb::Batch batch(dataset);
 	int i = 0;
 	while (true) {
-		ai.train(batch, 0.4f, 0.2f);
+		ai.backPropagation(batch, 0.4f, 0.2f);
 		std::cout << ++i << " - " << ai.loss(batch) << "\n";
 
 		if (stop)
@@ -48,6 +55,7 @@ int main()
 	}
 
 	thrd.join();
+	//ai.save("ok.txt");
 
 	double mean = 0;
 	for (const auto& d : dataset.datapoints)
@@ -63,7 +71,7 @@ int main()
 
 		linearSrr += std::pow(y - (x * m + q), 2);
 
-		double aiPred = ai.computePrediction(d)[0] * 2.5 - 0.5;
+		double aiPred = ai.feedforward(d)[0] * 2.5 - 0.5;
 		aiSrr += std::pow(y - aiPred, 2);
 
 		//std::cout << y << " -> " << (x * m + q) << " - " << aiPred << "\n";

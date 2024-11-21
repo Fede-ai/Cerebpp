@@ -1,3 +1,4 @@
+#pragma once
 #include "Crb/FNN/fnn.hpp"
 
 namespace Crb {
@@ -29,13 +30,12 @@ namespace Crb {
 
 	private:
 		std::vector<float> hiddenAct(const std::vector<float>& values) const;
-		std::vector<float> hiddenActDer(const std::vector<float>& values) const;
 		std::vector<float> outputAct(const std::vector<float>& values) const;
 
 		ActFunc hidAct = NoAct, outAct = NoAct;
 		LossFunc lossFunc = NoLoss;
 
-		int numBef = -1, numAft = -1;
+		const int numBefore, numAfter;
 		//relative to the nodes after
 		std::vector<float> biases;
 		//access a specific weight value. notation: weights[nodeBef][nodeAft]

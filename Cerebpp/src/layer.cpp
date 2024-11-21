@@ -5,8 +5,8 @@
 namespace Crb {
 	FNN::Layer::Layer(int inNumBef, int inNumAft, bool rand, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc)
 		:
-		numBef(inNumBef),
-		numAft(inNumAft),
+		numBefore(inNumBef),
+		numAfter(inNumAft),
 		hidAct(inHidAct),
 		outAct(inOutAct),
 		lossFunc(inLossFunc)
@@ -16,8 +16,7 @@ namespace Crb {
 		std::uniform_int_distribution<std::mt19937::result_type> dist(0, 100'000);
 
 		//setup biases and gradients with random values or 0s
-		for (int bias = 0; bias < numAft; bias++)
-		{
+		for (int bias = 0; bias < numAfter; bias++) {
 			if (rand)
 				biases.push_back(dist(rng) / 100'000.f - 0.5f);
 			else
@@ -28,12 +27,10 @@ namespace Crb {
 		}
 		biasesVelocities = biasesGradients;
 		//setup weights and gradients with random values or 0s
-		for (int bef = 0; bef < numBef; bef++)
-		{
+		for (int bef = 0; bef < numBefore; bef++) {
 			std::vector<float> partialWeights;
 			std::vector<float> partialWeightsGradients;
-			for (int aft = 0; aft < numAft; aft++)
-			{
+			for (int aft = 0; aft < numAfter; aft++) {
 				if (rand)
 					partialWeights.push_back(dist(rng) / 100'000.f - 0.5f);
 				else
@@ -49,8 +46,8 @@ namespace Crb {
 	}
 	FNN::Layer::Layer(int inNumBef, int inNumAft, ActFunc inHidAct, ActFunc inOutAct, LossFunc inLossFunc, std::string string)
 		:
-		numBef(inNumBef),
-		numAft(inNumAft),
+		numBefore(inNumBef),
+		numAfter(inNumAft),
 		hidAct(inHidAct),
 		outAct(inOutAct),
 		lossFunc(inLossFunc)
@@ -59,12 +56,10 @@ namespace Crb {
 		std::istringstream layerStrean(string);
 
 		//load all weights and gradients
-		for (int bef = 0; bef < numBef; bef++)
-		{
+		for (int bef = 0; bef < numBefore; bef++) {
 			std::vector<float> partialWeights;
 			std::vector<float> partialWeightsGradients;
-			for (int aft = 0; aft < numAft; aft++)
-			{
+			for (int aft = 0; aft < numAfter; aft++) {
 				getline(layerStrean, token, ',');
 				partialWeights.push_back(static_cast<float>(stod(token)));
 
@@ -77,8 +72,7 @@ namespace Crb {
 		weightsVelocities = weightsGradients;
 
 		//load all biases and gradients
-		for (int bias = 0; bias < numAft; bias++)
-		{
+		for (int bias = 0; bias < numAfter; bias++) {
 			getline(layerStrean, token, ',');
 			biases.push_back(static_cast<float>(stod(token)));
 
@@ -91,7 +85,7 @@ namespace Crb {
 	std::vector<float> FNN::Layer::forwardPass(const std::vector<float>& inputs, bool output)
 	{
 		//sizes do not match
-		if (inputs.size() != numBef)
+		if (inputs.size() != numBefore)
 			throw std::exception("data size != layer input size");
 
 		//store value for later
@@ -99,10 +93,9 @@ namespace Crb {
 
 		weightedValues.clear();
 		//calculate weighted values (nodesBefore * weights + bias)
-		for (int aft = 0; aft < numAft; aft++)
-		{
+		for (int aft = 0; aft < numAfter; aft++) {
 			float weightedValue = biases[aft];
-			for (int bef = 0; bef < numBef; bef++)
+			for (int bef = 0; bef < numBefore; bef++)
 				weightedValue += inputs[bef] * weights[bef][aft];
 			weightedValues.push_back(weightedValue);
 		}
@@ -118,18 +111,33 @@ namespace Crb {
 	std::vector<float> FNN::Layer::computeHiddenNodeValues(const std::vector<float>& nodeValuesAft, const Layer& layerAft) const
 	{
 		std::vector<float> nodeValues;
-		std::vector<float> actDer = hiddenActDer(weightedValues);
+
+		//calculate hidden activation derivatives according to the chosen function
+		if (hidAct == ActFunc::Sigmoid)
+		{
+			for (const auto& v : weightedValues) {
+				float activated = 1.f / (1 + exp(-v));
+				nodeValues.push_back(activated * (1 - activated));
+			}
+		}
+		else if (hidAct == ActFunc::ReLU)
+		{
+			for (const auto& v : weightedValues) {
+				if (v < 0)
+					nodeValues.push_back(0);
+				else
+					nodeValues.push_back(1);
+			}
+		}
+		else
+			throw std::exception("no valid hidden activation function");
 
 		//no idead wtf is going on here
-		for (int aft = 0; aft < numAft; aft++)
-		{
+		for (int aft = 0; aft < numAfter; aft++) {
 			float nodeValue = 0;
-			for (int aftAft = 0; aftAft < layerAft.numAft; aftAft++)
-			{
-				float inputDerivative = layerAft.weights[aft][aftAft];
-				nodeValue += inputDerivative * nodeValuesAft[aftAft];
-			}
-			nodeValues.push_back(nodeValue * actDer[aft]);
+			for (int aftAft = 0; aftAft < layerAft.numAfter; aftAft++)
+				nodeValue += layerAft.weights[aft][aftAft] * nodeValuesAft[aftAft];
+			nodeValues[aft] *= nodeValue;
 		}
 
 		return nodeValues;
@@ -174,26 +182,20 @@ namespace Crb {
 	void FNN::Layer::updateGradients(const std::vector<float>& nodeValues)
 	{
 		//update weights gradients
-		for (int bef = 0; bef < numBef; bef++)
-		{
-			for (int aft = 0; aft < numAft; aft++)
-			{
-				float weightDerivative = inputValues[bef] * nodeValues[aft];
-				weightsGradients[bef][aft] += weightDerivative;
-			}
+		for (int bef = 0; bef < numBefore; bef++) {
+			for (int aft = 0; aft < numAfter; aft++)
+				weightsGradients[bef][aft] += inputValues[bef] * nodeValues[aft];
 		}
 
 		//update biases gradients
-		for (int aft = 0; aft < numAft; aft++)
+		for (int aft = 0; aft < numAfter; aft++)
 			biasesGradients[aft] += nodeValues[aft];
 	}
 	void FNN::Layer::applyGradients(float learnRate, float momentum, int batchSize)
 	{
 		//apply all the weights gradients
-		for (int bef = 0; bef < numBef; bef++)
-		{
-			for (int aft = 0; aft < numAft; aft++)
-			{
+		for (int bef = 0; bef < numBefore; bef++) {
+			for (int aft = 0; aft < numAfter; aft++) {
 				weightsGradients[bef][aft] /= float(batchSize);
 				//find new velocity based on the momentum coefficient
 				weightsVelocities[bef][aft] = momentum * weightsVelocities[bef][aft] + 
@@ -204,8 +206,7 @@ namespace Crb {
 		}
 		
 		//apply all the biases gradients
-		for (int aft = 0; aft < numAft; aft++)
-		{
+		for (int aft = 0; aft < numAfter; aft++) {
 			biasesGradients[aft] /= float(batchSize);
 			//find new velocity based on the momentum coefficient
 			biasesVelocities[aft] = momentum * biasesVelocities[aft] + (1 - momentum) * biasesGradients[aft];
@@ -216,14 +217,13 @@ namespace Crb {
 	void FNN::Layer::clearGradients() 
 	{
 		//clear all weights gradients
-		for (int bef = 0; bef < numBef; bef++)
-		{
-			for (int aft = 0; aft < numAft; aft++)
+		for (int bef = 0; bef < numBefore; bef++) {
+			for (int aft = 0; aft < numAfter; aft++)
 				weightsGradients[bef][aft] = 0;
 		}
 
 		//clear all biases gradients
-		for (int aft = 0; aft < numAft; aft++)
+		for (int aft = 0; aft < numAfter; aft++)
 			biasesGradients[aft] = 0;
 	}
 
@@ -236,13 +236,11 @@ namespace Crb {
 		float loss = 0.0;
 
 		//calculate loss according to the chosen function
-		if (lossFunc == LossFunc::SquaredError)
-		{
+		if (lossFunc == LossFunc::SquaredError) {
 			for (int i = 0; i < values.size(); i++)
 				loss += static_cast<float>(std::pow((targets[i] - values[i]), 2));
 		}
-		else if (lossFunc == LossFunc::CrossEntropy)
-		{
+		else if (lossFunc == LossFunc::CrossEntropy) {
 			for (int i = 0; i < values.size(); i++)
 				loss += -targets[i] * static_cast<float>(std::log(values[i] + 1e-15));
 		}
@@ -257,14 +255,13 @@ namespace Crb {
 		std::ostringstream ss;
 
 		//add weights to the stream
-		for (int bef = 0; bef < numBef; bef++)
-		{
-			for (int aft = 0; aft < numAft; aft++)
+		for (int bef = 0; bef < numBefore; bef++) {
+			for (int aft = 0; aft < numAfter; aft++)
 				ss << std::to_string(weights[bef][aft]) << ',';
 		}
 
 		//add biases to the stream
-		for (int aft = 0; aft < numAft; aft++)
+		for (int aft = 0; aft < numAfter; aft++)
 			ss << std::to_string(biases[aft]) << ',';
 
 		return ss.str();
@@ -275,13 +272,11 @@ namespace Crb {
 		std::vector<float> activated;
 
 		//calculate hidden activated values according to the chosen function
-		if (hidAct == ActFunc::Sigmoid)
-		{
+		if (hidAct == ActFunc::Sigmoid) {
 			for (const auto& v : values)
 				activated.push_back(1.f / (1 + exp(-v)));
 		}
-		else if (hidAct == ActFunc::ReLU)
-		{
+		else if (hidAct == ActFunc::ReLU) {
 			for (const auto& v : values)
 				activated.push_back(std::max(v, float(0)));
 		}
@@ -290,46 +285,16 @@ namespace Crb {
 
 		return activated;
 	}
-	std::vector<float> FNN::Layer::hiddenActDer(const std::vector<float>& values) const
-	{
-		std::vector<float> derivatives;
-
-		//calculate hidden activation derivatives according to the chosen function
-		if (hidAct == ActFunc::Sigmoid)
-		{
-			for (const auto& v : values)
-			{
-				float activated = 1.f / (1 + exp(-v));
-				derivatives.push_back(activated * (1 - activated));
-			}
-		}
-		else if (hidAct == ActFunc::ReLU)
-		{
-			for (const auto& v : values)
-			{
-				if (v < 0)
-					derivatives.push_back(0);
-				else
-					derivatives.push_back(1);
-			}
-		}
-		else
-			throw std::exception("no valid hidden activation function");
-
-		return derivatives;
-	}
 	std::vector<float> FNN::Layer::outputAct(const std::vector<float>& values) const
 	{
 		std::vector<float> activated;
 
 		//calculate output activated values according to the chosen function
-		if (outAct == ActFunc::Sigmoid)
-		{
+		if (outAct == ActFunc::Sigmoid) {
 			for (const auto& v : values)
 				activated.push_back(1.f / (1 + exp(-v)));
 		}
-		else if (outAct == ActFunc::Softmax)
-		{
+		else if (outAct == ActFunc::Softmax) {
 			float expSum = 0;
 			for (const auto& v : values) {
 				float exp = std::exp(v);
